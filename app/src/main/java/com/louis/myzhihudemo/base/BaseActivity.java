@@ -20,7 +20,6 @@ import butterknife.Unbinder;
  */
 
 public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements IBaseView {
-
     @Nullable
     @BindView(R.id.empty_layout)
     protected EmptyLayout mEmptyLayout;
@@ -74,5 +73,35 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+    }
+
+
+    @Override
+    public void showLoading() {
+        if (mEmptyLayout != null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        if (mEmptyLayout != null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_HIDE);
+        }
+    }
+
+    @Override
+    public void showNetError(EmptyLayout.OnRetryListener onRetryListener) {
+        if (mEmptyLayout != null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
+            mEmptyLayout.setOnRetryListener(onRetryListener);
+        }
+    }
+
+    @Override
+    public void finishRefresh() {
+        if (mSwipeRefresh != null){
+            mSwipeRefresh.setRefreshing(false);
+        }
     }
 }
