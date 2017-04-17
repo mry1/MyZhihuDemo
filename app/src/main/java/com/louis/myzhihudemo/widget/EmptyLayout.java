@@ -115,7 +115,7 @@ public class EmptyLayout extends FrameLayout {
      * 设置重试监听器
      * @param onRetryListener
      */
-    public void setOnRetryListener(OnRetryListener onRetryListener) {
+    public void setRetryListener(OnRetryListener onRetryListener) {
         this.mOnRetryListener = onRetryListener;
     }
 

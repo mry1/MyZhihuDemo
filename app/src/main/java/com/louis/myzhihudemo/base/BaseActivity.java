@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.widget.EmptyLayout;
@@ -56,6 +57,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      */
     protected abstract void initInjector();
 
+    protected abstract void initView();
+
+    protected abstract void initData();
+
     /**
      * 更新视图控件
      *
@@ -63,11 +68,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      */
     protected abstract void updateViews(boolean isRefresh);
 
-    protected abstract void initData();
-
     protected abstract int getResId();
-
-    protected abstract void initView();
 
     @Override
     protected void onDestroy() {
@@ -94,7 +95,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     public void showNetError(EmptyLayout.OnRetryListener onRetryListener) {
         if (mEmptyLayout != null){
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
-            mEmptyLayout.setOnRetryListener(onRetryListener);
+            mEmptyLayout.setRetryListener(onRetryListener);
         }
     }
 
@@ -104,4 +105,18 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             mSwipeRefresh.setRefreshing(false);
         }
     }
+
+    /**
+     * 初始化Toolbar
+     * @param toolbar
+     * @param homeAsUpEnabled
+     * @param title
+     */
+    protected void initToolbar(Toolbar toolbar, boolean homeAsUpEnabled, String title){
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
+
+    }
+
 }

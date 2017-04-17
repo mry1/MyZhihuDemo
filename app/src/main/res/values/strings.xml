@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyZhihuDemo</string>
+
+    <string name="nav_news">新闻</string>
+    <string name="nav_photos">图片</string>
+    <string name="nav_videos">视频</string>
+    <string name="nav_setting">设置</string>
+
 </resources>
