@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.louis.myzhihudemo.injector.components.ApplicationModule;
 import com.louis.myzhihudemo.injector.modules.ApplicationComponent;
-import com.louis.myzhihudemo.injector.modules.DaggerAplicationComponent;
+import com.louis.myzhihudemo.injector.modules.DaggerApplicationComponent;
 
 /**
  * Created by louis on 17-4-17.
@@ -23,7 +23,7 @@ public class AndroidApplication extends Application {
 
     private void initInjector() {
         //不做注入操作，只提供全局单例数据
-        mAppComponent = DaggerAplicationComponent.builder().applicationModule(new ApplicationModule(this))
+        mAppComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
                 .build();
 
     }

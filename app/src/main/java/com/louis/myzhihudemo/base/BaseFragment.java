@@ -17,6 +17,8 @@ import com.louis.myzhihudemo.utils.SwipeRefreshHelper;
 import com.louis.myzhihudemo.widget.EmptyLayout;
 import com.orhanobut.logger.Logger;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +33,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     @Nullable
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
+    @Inject
+    protected T mPresenter;
     private Context mContext;
     private View mRootView;
     private boolean mIsMulti = false;
