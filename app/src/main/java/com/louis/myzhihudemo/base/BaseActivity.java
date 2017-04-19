@@ -3,6 +3,8 @@ package com.louis.myzhihudemo.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -119,4 +121,27 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     }
 
+    /**
+     * 替换Fragment
+     * @param containerViewId
+     * @param fragment
+     * @param tag
+     */
+    protected void replaceFragment(int containerViewId, Fragment fragment, String tag) {
+        if (getSupportFragmentManager().findFragmentByTag(tag) == null){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            //设置tag
+            fragmentTransaction.replace(containerViewId, fragment, tag);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            //这里设置tag，上面也要设置tag
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commit();
+
+        }else{
+            // 存在则弹出他上面所有的fragment，并显示对应fragment
+            getSupportFragmentManager().popBackStack(tag, 0);
+        }
+
+
+    }
 }

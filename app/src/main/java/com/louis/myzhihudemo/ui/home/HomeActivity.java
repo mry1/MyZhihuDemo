@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.louis.myzhihudemo.base.BaseActivity;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.news.main.NewsMainFragment;
 
 import butterknife.BindView;
 
@@ -31,6 +32,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case R.id.nav_news:
+                    replaceFragment(R.id.fl_container, new NewsMainFragment(), mSparseTags.get(R.id.nav_news));
 
                     break;
                 case R.id.nav_photos:
@@ -49,6 +51,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             return true;
         }
     });
+
+
     private int mItemId;
 
     @Override

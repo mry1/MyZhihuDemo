@@ -22,10 +22,10 @@ public abstract class BasePresenter {
      *
      * @param isRefresh 新增参数，用来判断是否为下拉刷新调用，下拉刷新的时候不应该再显示加载界面和异常界面
      */
-    protected abstract void getData(boolean isRefresh);
+    public abstract void getData(boolean isRefresh);
 
     /**
      * 加载更多数据
      */
-    protected abstract void getMoreData();
+    public abstract void getMoreData();
 }

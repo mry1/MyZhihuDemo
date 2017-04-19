@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -16,6 +16,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+//        greendao {
+//            schemaVersion 4
+//        }
     }
 }
 
@@ -50,4 +53,7 @@ dependencies {
     // dagger
     compile 'com.google.dagger:dagger:2.6'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.6'
+
+    //greendao
+    compile 'org.greenrobot:greendao:3.2.2'
 }

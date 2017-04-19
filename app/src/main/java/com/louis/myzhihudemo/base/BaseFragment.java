@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.louis.myzhihudemo.AndroidApplication;
-import com.louis.myzhihudemo.injector.modules.ApplicationComponent;
+import com.louis.myzhihudemo.injector.components.ApplicationComponent;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.SwipeRefreshHelper;
 import com.louis.myzhihudemo.widget.EmptyLayout;
@@ -43,6 +43,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+
     }
 
     @Nullable
@@ -53,7 +54,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             ButterKnife.bind(this, mRootView);
             initInjector();
             initViews();
-            initData();
             initSwipeRefresh();
         }
 
@@ -121,7 +121,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 
     protected abstract void initViews();
 
-    protected abstract void initData();
 
     private void initSwipeRefresh() {
         if (mSwipeRefresh != null) {
