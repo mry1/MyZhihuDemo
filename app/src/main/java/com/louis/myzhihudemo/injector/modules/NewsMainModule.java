@@ -3,6 +3,7 @@ package com.louis.myzhihudemo.injector.modules;
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.injector.PerFragment;
+import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.news.main.NewsMainFragment;
 import com.louis.myzhihudemo.ui.news.main.NewsMainPresent;
 
@@ -23,8 +24,8 @@ public class NewsMainModule {
 
     @PerFragment
     @Provides
-    public BasePresenter provideNewsMainPresent() {
-        return new NewsMainPresent(mView);
+    public BasePresenter provideNewsMainPresent(DaoSession daoSession) {
+        return new NewsMainPresent(mView, daoSession.getNewsTypeInfoDao());
     }
 
     @PerFragment
