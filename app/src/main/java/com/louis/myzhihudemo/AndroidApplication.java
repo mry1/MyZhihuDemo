@@ -1,8 +1,10 @@
 package com.louis.myzhihudemo;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.injector.components.ApplicationComponent;
 import com.louis.myzhihudemo.injector.components.DaggerApplicationComponent;
 import com.louis.myzhihudemo.injector.modules.ApplicationModule;
@@ -18,13 +20,20 @@ public class AndroidApplication extends Application {
     private ApplicationComponent mAppComponent;
     private DaoSession mDaoSession;
     private static final String DB_NAME = "news-db";
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
 
         initDatabase();
         initInjector();
+        initConfig();
+    }
+
+    public static Context getContext(){
+        return context;
     }
 
     /**
@@ -41,6 +50,14 @@ public class AndroidApplication extends Application {
         //不做注入操作，只提供全局单例数据
         mAppComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this, mDaoSession))
                 .build();
+
+    }
+
+    /**
+     * 初始化配置
+     */
+    private void initConfig() {
+        RetrofitService.init();
 
     }
 

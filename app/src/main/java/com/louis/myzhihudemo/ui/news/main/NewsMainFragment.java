@@ -64,6 +64,7 @@ public class NewsMainFragment extends BaseFragment implements INewsMainView {
 
     @Override
     public void loadData(List<NewsTypeInfo> checkList) {
+        // 显示数据
 
     }
 }
