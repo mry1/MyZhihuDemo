@@ -1,16 +1,21 @@
 package com.louis.myzhihudemo.ui.news.main;
 
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
+import com.louis.myzhihudemo.api.bean.ThemeInfo;
 import com.louis.myzhihudemo.base.BaseFragment;
 import com.louis.myzhihudemo.injector.components.DaggerNewsMainComponent;
 import com.louis.myzhihudemo.injector.modules.NewsMainModule;
 import com.louis.myzhihudemo.local.table.NewsTypeInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.news.newslist.NewsListFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,7 +53,7 @@ public class NewsMainFragment extends BaseFragment implements INewsMainView {
 
     @Override
     protected void initViews() {
-        initToolbar(mToolbar,true, "新闻");
+        initToolbar(mToolbar, true, "新闻");
         setHasOptionsMenu(true);//让onCreateOptionsMenu生效
         mViewPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -63,8 +68,15 @@ public class NewsMainFragment extends BaseFragment implements INewsMainView {
     }
 
     @Override
-    public void loadData(List<NewsTypeInfo> checkList) {
-        // 显示数据
+    public void loadData(List<ThemeInfo.ThemeBean> checkList) {
+        // 加载数据
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        ArrayList<String> titles = new ArrayList<>();
+        for (ThemeInfo.ThemeBean themeBean : checkList) {
+            titles.add(themeBean.name);
+            fragments.add(NewsListFragment.newInstance(themeBean.id));
+        }
+        mPagerAdapter.setItems(fragments, titles);
 
     }
 }

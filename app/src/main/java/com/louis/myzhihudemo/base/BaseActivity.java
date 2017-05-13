@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -53,7 +54,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
 
-
     /**
      * Dagger注入
      */
@@ -81,21 +81,21 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void showLoading() {
-        if (mEmptyLayout != null){
+        if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
         }
     }
 
     @Override
     public void hideLoading() {
-        if (mEmptyLayout != null){
+        if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_HIDE);
         }
     }
 
     @Override
     public void showNetError(EmptyLayout.OnRetryListener onRetryListener) {
-        if (mEmptyLayout != null){
+        if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
             mEmptyLayout.setRetryListener(onRetryListener);
         }
@@ -103,19 +103,21 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void finishRefresh() {
-        if (mSwipeRefresh != null){
+        if (mSwipeRefresh != null) {
             mSwipeRefresh.setRefreshing(false);
         }
     }
 
     /**
      * 初始化Toolbar
+     *
      * @param toolbar
      * @param homeAsUpEnabled
      * @param title
      */
-    protected void initToolbar(Toolbar toolbar, boolean homeAsUpEnabled, String title){
+    protected void initToolbar(Toolbar toolbar, boolean homeAsUpEnabled, String title) {
         toolbar.setTitle(title);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
 
@@ -123,12 +125,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     /**
      * 替换Fragment
+     *
      * @param containerViewId
      * @param fragment
      * @param tag
      */
     protected void replaceFragment(int containerViewId, Fragment fragment, String tag) {
-        if (getSupportFragmentManager().findFragmentByTag(tag) == null){
+        if (getSupportFragmentManager().findFragmentByTag(tag) == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //设置tag
             fragmentTransaction.replace(containerViewId, fragment, tag);
@@ -137,7 +140,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             fragmentTransaction.addToBackStack(tag);
             fragmentTransaction.commit();
 
-        }else{
+        } else {
             // 存在则弹出他上面所有的fragment，并显示对应fragment
             getSupportFragmentManager().popBackStack(tag, 0);
         }

@@ -3,6 +3,7 @@ package com.louis.myzhihudemo.api;
 import android.support.annotation.NonNull;
 
 import com.louis.myzhihudemo.AndroidApplication;
+import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 import com.louis.myzhihudemo.utils.NetUtils;
 import com.orhanobut.logger.Logger;
@@ -127,6 +128,10 @@ public class RetrofitService {
      */
     public Observable<ThemeInfo> getTheme() {
         return sNewsService.getTheme();
+    }
+
+    public Observable<StoryList> getThemeStories(int id){
+        return sNewsService.getThemeStories(id);
     }
 
     @NonNull

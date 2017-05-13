@@ -1,5 +1,7 @@
 package com.louis.myzhihudemo.ui.news.main;
 
+import android.util.Log;
+
 import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 import com.louis.myzhihudemo.base.BasePresenter;
@@ -8,9 +10,11 @@ import com.louis.myzhihudemo.local.table.NewsTypeInfoDao;
 
 import java.util.List;
 
+import rx.Observer;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -40,13 +44,19 @@ public class NewsMainPresent extends BasePresenter {
 //                });
         RetrofitService.getInstance().getTheme()
                 .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ThemeInfo>() {
+                .map(new Func1<ThemeInfo, List<ThemeInfo.ThemeBean>>() {
                     @Override
-                    public void call(ThemeInfo themeInfo) {
-                        System.out.println("=============");
-                        System.out.println(themeInfo.toString());
-
+                    public List<ThemeInfo.ThemeBean> call(ThemeInfo themeInfo) {
+                        return themeInfo.others;
+                    }
+                })
+                .subscribe(new Action1<List<ThemeInfo.ThemeBean>>() {
+                    @Override
+                    public void call(List<ThemeInfo.ThemeBean> themeBeen) {
+                        System.out.println("themeBean...." + themeBeen.toString());
+                        mView.loadData(themeBeen);
                     }
                 });
 
