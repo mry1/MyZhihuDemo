@@ -9,12 +9,20 @@ import android.widget.Toast;
 
 public class ToastUtils {
 
+    private static Context sContext;
+
+    private ToastUtils() {
+        throw new RuntimeException("ToastUtils cannot be initialized!");
+    }
+
+    public static void init(Context context) {
+        sContext = context;
+    }
+
     /**
-     *
-     * @param context
      * @param msg
      */
-    public static void showToast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+    public static void showToast(String msg) {
+        Toast.makeText(sContext, msg, Toast.LENGTH_SHORT).show();
     }
 }

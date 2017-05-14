@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by louis on 17-4-17.
  */
 
-public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements IBaseView {
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements IBaseView, EmptyLayout.OnRetryListener {
     @Nullable
     @BindView(R.id.empty_layout)
     EmptyLayout mEmptyLayout;
@@ -38,7 +38,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     protected T mPresenter;
     private Context mContext;
     private View mRootView;
-    private boolean mIsMulti = false;
+    private boolean mIsMulti = false;//用来判断是否加载过
+
 
     private String TAG = getClass().getName();
 
@@ -70,13 +71,14 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG,"onActivityCreated");
+        Log.d(TAG, "onActivityCreated");
         mIsMulti = true;
         updateViews(false);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
+        Log.d(TAG, "setUserVisibleHint...." + isVisibleToUser);
         if (isVisibleToUser && isVisible() && mRootView != null && !mIsMulti) {
             mIsMulti = true;
             updateViews(false);
@@ -101,12 +103,17 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     }
 
     @Override
-    public void showNetError(EmptyLayout.OnRetryListener onRetryListener) {
+    public void showNetError() {
         if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
-            mEmptyLayout.setRetryListener(onRetryListener);
+            mEmptyLayout.setRetryListener(this);
 
         }
+    }
+
+    @Override
+    public void onRetry() {
+
     }
 
     @Override
@@ -153,5 +160,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         BaseActivity activity = (BaseActivity) getActivity();
         activity.initToolbar(toolbar, homeAsUpEnabled, title);
     }
+
 
 }

@@ -10,6 +10,7 @@ import com.louis.myzhihudemo.injector.components.DaggerApplicationComponent;
 import com.louis.myzhihudemo.injector.modules.ApplicationModule;
 import com.louis.myzhihudemo.local.table.DaoMaster;
 import com.louis.myzhihudemo.local.table.DaoSession;
+import com.louis.myzhihudemo.utils.ToastUtils;
 
 /**
  * Created by louis on 17-4-17.
@@ -32,7 +33,7 @@ public class AndroidApplication extends Application {
         initConfig();
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 
@@ -57,7 +58,9 @@ public class AndroidApplication extends Application {
      * 初始化配置
      */
     private void initConfig() {
+        ToastUtils.init(getApplicationContext());
         RetrofitService.init();
+
 
     }
 

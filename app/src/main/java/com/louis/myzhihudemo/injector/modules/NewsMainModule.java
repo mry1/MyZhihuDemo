@@ -24,7 +24,7 @@ public class NewsMainModule {
 
     @PerFragment
     @Provides
-    public BasePresenter provideNewsMainPresent(DaoSession daoSession) {
+    public NewsMainPresent provideNewsMainPresent(DaoSession daoSession) {
         return new NewsMainPresent(mView, daoSession.getNewsTypeInfoDao());
     }
 

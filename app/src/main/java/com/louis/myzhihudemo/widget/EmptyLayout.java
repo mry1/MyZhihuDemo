@@ -81,7 +81,6 @@ public class EmptyLayout extends FrameLayout {
             case STATUS_LOADING:
                 setVisibility(VISIBLE);
                 mRlEmptyContainer.setVisibility(GONE);
-                ToastUtils.showToast(mContext, "STATUS_LOADING");
                 break;
             case STATUS_NO_DATA:
                 break;

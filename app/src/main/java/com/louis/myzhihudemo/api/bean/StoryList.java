@@ -1,5 +1,7 @@
 package com.louis.myzhihudemo.api.bean;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +39,26 @@ public class StoryList {
         }
     }
 
-    public static class Story {
+    public static class Story implements MultiItemEntity {
+        public static final int ITEM_TYPE_NORMAL = 1;
+        public static final int ITEM_TYPE_HEADER = 2;
+
         public int id;
         public int type;
         public String title;
         public String image;//top_stories用的字段
         public String ga_prefix;// 供 Google Analytics 使用
         public ArrayList<String> images;//其他story用的字段
+        private int itemType;
+
+        public Story(int itemType) {
+            itemType = itemType;
+        }
+
+        @Override
+        public int getItemType() {
+            return itemType;
+        }
 
         @Override
         public String toString() {

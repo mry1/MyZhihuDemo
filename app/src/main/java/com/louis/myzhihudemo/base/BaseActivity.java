@@ -23,7 +23,7 @@ import butterknife.Unbinder;
  * Created by louis on 17-4-11.
  */
 
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements IBaseView {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements IBaseView, EmptyLayout.OnRetryListener {
     @Nullable
     @BindView(R.id.empty_layout)
     protected EmptyLayout mEmptyLayout;
@@ -94,11 +94,16 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public void showNetError(EmptyLayout.OnRetryListener onRetryListener) {
+    public void showNetError() {
         if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
-            mEmptyLayout.setRetryListener(onRetryListener);
+            mEmptyLayout.setRetryListener(this);
         }
+    }
+
+    @Override
+    public void onRetry() {
+
     }
 
     @Override
@@ -147,4 +152,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
 
     }
+
+
 }
