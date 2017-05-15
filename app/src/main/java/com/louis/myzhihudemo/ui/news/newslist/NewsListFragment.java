@@ -3,6 +3,9 @@ package com.louis.myzhihudemo.ui.news.newslist;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.louis.myzhihudemo.adapter.NewsListAdapter;
 import com.louis.myzhihudemo.api.bean.StoryList;
@@ -11,7 +14,11 @@ import com.louis.myzhihudemo.injector.components.DaggerNewsListComponent;
 import com.louis.myzhihudemo.injector.modules.NewsListModule;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
+import com.louis.myzhihudemo.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -28,6 +35,8 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
     RecyclerView mRvStoriesList;
     @Inject
     NewsListAdapter mStoriesListAdapter;
+    ImageView mThemeThumbnail;
+    private View mView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +75,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
     protected void initViews() {
         RecyclerViewHelper.initRecyclerView(getContext(), mRvStoriesList, true, mStoriesListAdapter);
 
+
     }
 
     @Override
@@ -74,13 +84,17 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
 
     }
 
+
     @Override
     public void loadData(StoryList stories) {
-
-        // TODO: 2017/5/14 获取完数据，更新adapter
-
         Logger.d("故事数据：" + stories.toString());
-        mStoriesListAdapter.addData(stories.stories);
-
+        mStoriesListAdapter.setNewData(stories.stories);
+        mStoriesListAdapter.removeAllHeaderView();
+        if (stories.background != null) {
+            mView = LayoutInflater.from(getContext()).inflate(R.layout.item_header_story, null, false);
+            mThemeThumbnail = (ImageView) mView.findViewById(R.id.iv_theme_thumbnail);
+            Picasso.with(getContext()).load(stories.background).into(mThemeThumbnail);
+            mStoriesListAdapter.addHeaderView(mView);
+        }
     }
 }

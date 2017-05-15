@@ -139,6 +139,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
                 @Override
                 public void onRefresh() {
                     updateViews(true);
+//                    onRefreshViews();
                 }
             });
         }
@@ -150,6 +151,13 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
      * @param isRefresh 新增参数，用来判断是否为下拉刷新调用，下拉刷新的时候不应该再显示加载界面和异常界面
      */
     protected abstract void updateViews(boolean isRefresh);
+
+    /**
+     * 下拉刷新时调用
+     */
+//    protected void onRefreshViews() {
+//
+//    }
 
     protected ApplicationComponent getAppComponent() {
         AndroidApplication application = (AndroidApplication) getActivity().getApplication();

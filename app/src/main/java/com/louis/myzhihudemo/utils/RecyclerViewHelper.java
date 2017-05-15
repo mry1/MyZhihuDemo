@@ -28,7 +28,7 @@ public class RecyclerViewHelper {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         view.setLayoutManager(layoutManager);
         //添加recyclerView动画
-        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
         if (isDivided){
             view.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         }
