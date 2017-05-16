@@ -15,6 +15,7 @@ import com.louis.myzhihudemo.AndroidApplication;
 import com.louis.myzhihudemo.injector.components.ApplicationComponent;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.SwipeRefreshHelper;
+import com.louis.myzhihudemo.utils.ToastUtils;
 import com.louis.myzhihudemo.widget.EmptyLayout;
 import com.orhanobut.logger.Logger;
 
@@ -36,7 +37,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     SwipeRefreshLayout mSwipeRefresh;
     @Inject
     protected T mPresenter;
-    private Context mContext;
+    protected Context mContext;
     private View mRootView;
     private boolean mIsMulti = false;//用来判断是否加载过
 
@@ -113,6 +114,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 
     @Override
     public void onRetry() {
+        ToastUtils.showToast("重试！！");
 
     }
 

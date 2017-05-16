@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.louis.myzhihudemo.adapter.NewsListAdapter;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.base.BaseFragment;
@@ -74,7 +75,13 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
     @Override
     protected void initViews() {
         RecyclerViewHelper.initRecyclerView(getContext(), mRvStoriesList, true, mStoriesListAdapter);
+        mStoriesListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mPresenter.getMoreData();
 
+            }
+        }, mRvStoriesList);
 
     }
 

@@ -1,5 +1,6 @@
 package com.louis.myzhihudemo.api;
 
+import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 
@@ -13,10 +14,25 @@ import rx.Observable;
 
 public interface INewsApi {
 
+    /**
+     * 获取主题
+     * @return
+     */
     @GET("api/4/themes")
     Observable<ThemeInfo> getTheme();
 
+    /**
+     * 获取每个主题的数据
+     * @param id
+     * @return
+     */
     @GET("api/4/theme/{id}")
     Observable<StoryList> getThemeStories(@Path("id") int id);
 
+    /**
+     * 获取首页数据
+     * @return
+     */
+    @GET("api/4/news/latest")
+    Observable<HomeStory> getHomeStory();
 }

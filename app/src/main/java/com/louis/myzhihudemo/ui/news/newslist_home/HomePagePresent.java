@@ -1,43 +1,34 @@
-package com.louis.myzhihudemo.ui.news.newslist;
+package com.louis.myzhihudemo.ui.news.newslist_home;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.louis.myzhihudemo.api.RetrofitService;
-import com.louis.myzhihudemo.api.bean.StoryList;
+import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
-import io.reactivex.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Louis on 2017/5/13.
+ * Created by Louis on 2017/5/16.
  */
 
-public class NewsListPresent extends BasePresenter {
+public class HomePagePresent extends BasePresenter {
+    HomePageFragment mView;
+    private String TAG = getClass().getName();
 
-    private NewsListFragment mView;
-    private int mStroryID;
-
-    public NewsListPresent(NewsListFragment view, int storyID) {
+    public HomePagePresent(HomePageFragment view) {
         mView = view;
-        mStroryID = storyID;
-
     }
 
-    /**
-     *
-     * @param isRefresh 新增参数，用来判断是否为下拉刷新调用，下拉刷新的时候不应该再显示加载界面和异常界面
-     */
     @Override
     public void getData(final boolean isRefresh) {
-
-        RetrofitService.getInstance().getThemeStories(mStroryID)
+        RetrofitService.getInstance().getHomeStory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Action0() {
@@ -48,35 +39,32 @@ public class NewsListPresent extends BasePresenter {
                         }
                     }
                 })
-                .subscribe(new Subscriber<StoryList>() {
+                .subscribe(new Subscriber<HomeStory>() {
                     @Override
                     public void onCompleted() {
-                        Logger.d("onCompleted", isRefresh);
-                        if (isRefresh) {
-                            mView.finishRefresh();
-                        } else {
+                        Log.d(TAG, "onCompleted" + isRefresh);
+                        if (!isRefresh) {
                             mView.hideLoading();
+                        } else {
+                            mView.finishRefresh();
                         }
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.e(e.getMessage() + isRefresh);
-                        if (isRefresh){
+                        if (isRefresh) {
                             mView.finishRefresh();
-                            ToastUtils.showToast("刷新失败提示什么根据实际情况");
-
-                        }else{
+                            ToastUtils.showToast("刷新失败");
+                        } else {
                             mView.showNetError();
                         }
 
                     }
 
                     @Override
-                    public void onNext(StoryList storyList) {
-                        System.out.println("storyList:::" +storyList.toString());
-                        mView.loadData(storyList);
+                    public void onNext(HomeStory homeStory) {
+                        System.out.println("homeStory::" + homeStory);
+                        mView.loadData(homeStory);
 
                     }
                 });
@@ -86,7 +74,6 @@ public class NewsListPresent extends BasePresenter {
 
     @Override
     public void getMoreData() {
-
 
     }
 }

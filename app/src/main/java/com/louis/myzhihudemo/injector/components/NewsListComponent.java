@@ -9,7 +9,6 @@ import dagger.Component;
 /**
  * Created by Louis on 2017/5/13.
  */
-
 @PerFragment
 @Component(dependencies = ApplicationComponent.class, modules = NewsListModule.class)
 public interface NewsListComponent {

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -22,17 +23,17 @@ import java.util.List;
 public class NewsListAdapter extends BaseQuickAdapter<StoryList.Story, BaseViewHolder> {
 
     private Context mContext;
+    List<StoryList.Story> data;
 
     public NewsListAdapter(Context context, @Nullable List<StoryList.Story> data) {
         super(R.layout.item_nomal_story, data);
+        this.data = data;
         mContext = context;
     }
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
-     *
-     * @param data A new list is created out of this one to avoid mutable list
      */
 //    public NewsListAdapter(Context context, List<StoryList.Story> data) {
 //        super(data);
@@ -76,11 +77,14 @@ public class NewsListAdapter extends BaseQuickAdapter<StoryList.Story, BaseViewH
     private void handlerNormalStory(BaseViewHolder holder, StoryList.Story story) {
         holder.setText(R.id.tv_title, story.title);
         ImageView images = holder.getView(R.id.image_view);
+
         if (story.images != null && story.images.size() > 0) {
             Picasso.with(mContext).load(story.images.get(0)).into(images);
-        }else{
+        } else {
             images.setVisibility(View.GONE);
+
         }
+
 
     }
 }

@@ -3,6 +3,7 @@ package com.louis.myzhihudemo.api;
 import android.support.annotation.NonNull;
 
 import com.louis.myzhihudemo.AndroidApplication;
+import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 import com.louis.myzhihudemo.utils.NetUtils;
@@ -121,6 +122,14 @@ public class RetrofitService {
         sNewsService = retrofit.create(INewsApi.class);
     }
 
+    @NonNull
+    private static String _parseParams(RequestBody body, Buffer requestBuffer) throws UnsupportedEncodingException {
+        if (body.contentType() != null && !body.contentType().toString().contains("multipart")) {
+            return URLDecoder.decode(requestBuffer.readUtf8(), "UTF-8");
+        }
+        return "null";
+    }
+
     /**
      * 获取主题列表
      *
@@ -130,15 +139,11 @@ public class RetrofitService {
         return sNewsService.getTheme();
     }
 
-    public Observable<StoryList> getThemeStories(int id){
+    public Observable<StoryList> getThemeStories(int id) {
         return sNewsService.getThemeStories(id);
     }
 
-    @NonNull
-    private static String _parseParams(RequestBody body, Buffer requestBuffer) throws UnsupportedEncodingException {
-        if (body.contentType() != null && !body.contentType().toString().contains("multipart")) {
-            return URLDecoder.decode(requestBuffer.readUtf8(), "UTF-8");
-        }
-        return "null";
+    public Observable<HomeStory> getHomeStory() {
+        return sNewsService.getHomeStory();
     }
 }
