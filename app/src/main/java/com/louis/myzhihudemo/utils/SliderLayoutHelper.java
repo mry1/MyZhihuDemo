@@ -17,11 +17,6 @@ public class SliderLayoutHelper {
     public static void init(Context context, SliderLayout layout, HomeStory stories) {
         for (HomeStory.HomeStories story : stories.top_stories) {
             TextSliderView textSliderView = new TextSliderView(context);
-            System.out.println("===========");
-            System.out.println(story.title);
-            System.out.println(story.image);
-            System.out.println("===========");
-
             textSliderView.description(story.title)
                     .image(story.image)
                     .empty(DefIconFactory.provideIcon())

@@ -14,9 +14,6 @@ public abstract class BasePresenter {
         mContext = context;
     }
 
-/**
- * 获取网络数据，更新界面
- */
     /**
      * 获取网络数据，更新界面
      *

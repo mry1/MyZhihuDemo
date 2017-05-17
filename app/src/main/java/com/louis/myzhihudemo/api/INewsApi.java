@@ -16,6 +16,7 @@ public interface INewsApi {
 
     /**
      * 获取主题
+     *
      * @return
      */
     @GET("api/4/themes")
@@ -23,6 +24,7 @@ public interface INewsApi {
 
     /**
      * 获取每个主题的数据
+     *
      * @param id
      * @return
      */
@@ -31,8 +33,17 @@ public interface INewsApi {
 
     /**
      * 获取首页数据
+     *
      * @return
      */
     @GET("api/4/news/latest")
     Observable<HomeStory> getHomeStory();
+
+    /**
+     * 获取之前的首页数据
+     * @param date
+     * @return
+     */
+    @GET("api/4/news/before/{date}")
+    Observable<HomeStory> getBeforeHomeStory(@Path("date") String date);
 }

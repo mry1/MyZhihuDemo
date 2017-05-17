@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.daimajia.slider.library.SliderLayout;
 import com.louis.myzhihudemo.adapter.HomeStoryAdapter;
 import com.louis.myzhihudemo.api.bean.HomeStory;
@@ -47,7 +48,15 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     @Override
     protected void initViews() {
         RecyclerViewHelper.initRecyclerView(getContext(), mRvStoriesList, true, mStoryAdapter);
+        // 上拉加载更多
+        mStoryAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                System.out.println("请求更多数据");
+                mPresenter.getMoreData();
 
+            }
+        }, mRvStoriesList);
 
     }
 
@@ -60,7 +69,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     @Override
     public void onResume() {
         super.onResume();
-        if (mSlider != null){
+        if (mSlider != null) {
             mSlider.startAutoCycle();
         }
     }
@@ -68,7 +77,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     @Override
     public void onStop() {
         super.onStop();
-        if (mSlider != null){
+        if (mSlider != null) {
             mSlider.stopAutoCycle();
         }
     }
@@ -84,6 +93,22 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
         mSlider = (SliderLayout) headerView.findViewById(R.id.slider_ads);
         SliderLayoutHelper.init(mContext, mSlider, homeStory);
         mStoryAdapter.addHeaderView(headerView);
+
+    }
+
+    @Override
+    public void loadMoreData(HomeStory data) {
+//        System.out.println("=======");
+//        System.out.println(data.stories.toString());
+//        System.out.println("=======");
+        mStoryAdapter.loadMoreComplete();
+        mStoryAdapter.addData(data.stories);
+
+    }
+
+    @Override
+    public void loadNoData() {
+
 
     }
 }

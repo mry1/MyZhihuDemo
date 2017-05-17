@@ -9,6 +9,8 @@ import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
+import java.util.Calendar;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -19,6 +21,9 @@ import rx.schedulers.Schedulers;
  */
 
 public class HomePagePresent extends BasePresenter {
+    private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+    private int mMonth = Calendar.getInstance().get(Calendar.MONTH);
+    private int mDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     HomePageFragment mView;
     private String TAG = getClass().getName();
 
@@ -74,6 +79,33 @@ public class HomePagePresent extends BasePresenter {
 
     @Override
     public void getMoreData() {
+        Calendar calendar = Calendar.getInstance();
+//        System.out.println("===========");
+//        System.out.println("mDay:" + mDay);
+//        System.out.println("===========");
+        calendar.set(mYear, mMonth, --mDay);
+        RetrofitService.getInstance().getBeforeHomeStory(calendar.getTimeInMillis())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HomeStory>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.showToast("加载失败，" + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(HomeStory story) {
+//                        System.out.println("story::" + story.toString());
+                        mView.loadMoreData(story);
+                    }
+                });
+
 
     }
 }

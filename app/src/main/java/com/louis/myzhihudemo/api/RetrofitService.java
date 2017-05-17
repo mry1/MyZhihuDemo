@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -145,5 +147,13 @@ public class RetrofitService {
 
     public Observable<HomeStory> getHomeStory() {
         return sNewsService.getHomeStory();
+    }
+
+    public Observable<HomeStory> getBeforeHomeStory(long date) {
+        String sDate;
+        Date d = new Date(date + 24*60*60*1000);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        sDate = format.format(d);
+        return sNewsService.getBeforeHomeStory(sDate);
     }
 }
