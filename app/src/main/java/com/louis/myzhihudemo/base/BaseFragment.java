@@ -3,6 +3,7 @@ package com.louis.myzhihudemo.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     protected Context mContext;
     private View mRootView;
     private boolean mIsMulti = false;//用来判断是否加载过
+    protected FloatingActionButton mFab;
 
 
     private String TAG = getClass().getName();
@@ -48,6 +50,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
     }
 
@@ -160,7 +163,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 //    protected void onRefreshViews() {
 //
 //    }
-
     protected ApplicationComponent getAppComponent() {
         AndroidApplication application = (AndroidApplication) getActivity().getApplication();
         return application.getAppComponent();

@@ -15,18 +15,16 @@ import com.louis.myzhihudemo.api.bean.HomeStory;
 public class SliderLayoutHelper {
 
     public static void init(Context context, SliderLayout layout, HomeStory stories) {
+        init(context, layout, stories, null);
+    }
+
+    public static void init(Context context, SliderLayout layout, HomeStory stories, BaseSliderView.OnSliderClickListener onSliderClickListener) {
         for (HomeStory.HomeStories story : stories.top_stories) {
             TextSliderView textSliderView = new TextSliderView(context);
             textSliderView.description(story.title)
                     .image(story.image)
                     .empty(DefIconFactory.provideIcon())
-                    .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                        @Override
-                        public void onSliderClick(BaseSliderView slider) {
-                            ToastUtils.showToast("点击了大图");
-
-                        }
-                    });
+                    .setOnSliderClickListener(onSliderClickListener);
             layout.addSlider(textSliderView);
         }
         layout.setPresetIndicator(SliderLayout.PresetIndicators.Right_Bottom);
@@ -35,5 +33,4 @@ public class SliderLayoutHelper {
         layout.setDuration(4000);
 
     }
-
 }

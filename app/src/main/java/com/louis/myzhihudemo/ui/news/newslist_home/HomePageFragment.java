@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.louis.myzhihudemo.adapter.HomeStoryAdapter;
 import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.base.BaseFragment;
@@ -14,6 +15,10 @@ import com.louis.myzhihudemo.injector.modules.HomePageModule;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
 import com.louis.myzhihudemo.utils.SliderLayoutHelper;
+import com.louis.myzhihudemo.utils.ToastUtils;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -23,12 +28,15 @@ import butterknife.BindView;
  * Created by Louis on 2017/5/16.
  */
 
-public class HomePageFragment extends BaseFragment<HomePagePresent> implements IHomePageView {
+public class HomePageFragment extends BaseFragment<HomePagePresent> implements IHomePageView, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.rv_news_list)
     RecyclerView mRvStoriesList;
     @Inject
     HomeStoryAdapter mStoryAdapter;
     private SliderLayout mSlider;
+    private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+    private int mMonth = Calendar.getInstance().get(Calendar.MONTH);
+    private int mDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
     @Override
     protected int attachLayoutRes() {
@@ -47,13 +55,22 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
 
     @Override
     protected void initViews() {
+        mFab.setRippleColor(getResources().getColor(R.color.colorPrimary));
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPickDateDialog();
+            }
+        });
         RecyclerViewHelper.initRecyclerView(getContext(), mRvStoriesList, true, mStoryAdapter);
         // 上拉加载更多
         mStoryAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                System.out.println("请求更多数据");
-                mPresenter.getMoreData();
+                Calendar c = Calendar.getInstance();
+                c.set(mYear, mMonth, mDay);
+                mPresenter.getMoreData1(false, c.getTimeInMillis());
+//                mPresenter.getMoreData();
 
             }
         }, mRvStoriesList);
@@ -64,6 +81,28 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     protected void updateViews(boolean isRefresh) {
         mPresenter.getData(isRefresh);
 
+    }
+
+    @Override
+    public void loadData(HomeStory homeStory) {
+
+        mStoryAdapter.setNewData(homeStory.stories);
+        mStoryAdapter.removeAllHeaderView();
+
+        // 添加头部轮播图
+        View headerView = LayoutInflater.from(mContext).inflate(R.layout.head_news_list, null);
+        mSlider = (SliderLayout) headerView.findViewById(R.id.slider_ads);
+        SliderLayoutHelper.init(mContext, mSlider, homeStory, new BaseSliderView.OnSliderClickListener() {
+            @Override
+            public void onSliderClick(BaseSliderView slider) {
+                ToastUtils.showToast("点击了大图");
+
+            }
+        });
+        mStoryAdapter.addHeaderView(headerView);
+
+        // 点击进入故事详情页
+        mStoryAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -83,20 +122,6 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     }
 
     @Override
-    public void loadData(HomeStory homeStory) {
-
-        mStoryAdapter.setNewData(homeStory.stories);
-        mStoryAdapter.removeAllHeaderView();
-
-        // 添加头部轮播图
-        View headerView = LayoutInflater.from(mContext).inflate(R.layout.head_news_list, null);
-        mSlider = (SliderLayout) headerView.findViewById(R.id.slider_ads);
-        SliderLayoutHelper.init(mContext, mSlider, homeStory);
-        mStoryAdapter.addHeaderView(headerView);
-
-    }
-
-    @Override
     public void loadMoreData(HomeStory data) {
 //        System.out.println("=======");
 //        System.out.println(data.stories.toString());
@@ -107,8 +132,65 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     }
 
     @Override
+    public void loadMoreDataByTag(boolean clear, HomeStory data) {
+        if (clear) {
+            mStoryAdapter.setNewData(data.stories);
+
+        } else {
+            mStoryAdapter.loadMoreComplete();
+            mStoryAdapter.addData(data.stories);
+        }
+    }
+
+    @Override
     public void loadNoData() {
 
 
+    }
+
+
+    /**
+     * 点击进入故事详情页
+     *
+     * @param adapter
+     * @param view
+     * @param position
+     */
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        ToastUtils.showToast("点击了新闻：" + position);
+
+    }
+
+    /**
+     * 显示选择日期dialog
+     */
+    private void showPickDateDialog() {
+        Calendar now = Calendar.getInstance();
+        now.set(mYear, mMonth, mDay);
+        DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                mYear = year;
+                mMonth = monthOfYear;
+                mDay = dayOfMonth;
+                Calendar temp = Calendar.getInstance();
+                temp.clear();
+                temp.set(mYear, mMonth, mDay);
+                mPresenter.getMoreData1(true, temp.getTimeInMillis());
+
+            }
+        }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        dialog.setMaxDate(Calendar.getInstance());
+        Calendar minDate = Calendar.getInstance();
+        // 2013.5.20是知乎日报api首次上线
+        minDate.set(2013, 5, 20);
+        dialog.setMinDate(minDate);
+        dialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
+
+    }
+
+    public void removeHeaderView() {
+        mStoryAdapter.removeAllHeaderView();
     }
 }

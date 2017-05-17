@@ -1,10 +1,12 @@
 package com.louis.myzhihudemo.ui.news.main;
 
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
@@ -36,6 +38,8 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresent> implements I
     ViewPager mViewPager;
     @Inject
     ViewPagerAdapter mPagerAdapter;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
 
     @Override
     protected int attachLayoutRes() {
@@ -58,7 +62,26 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresent> implements I
         setHasOptionsMenu(true);//让onCreateOptionsMenu生效
         mViewPager.setAdapter(mPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    mFab.setVisibility(View.VISIBLE);
+                } else {
+                    mFab.setVisibility(View.GONE);
+                }
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
 

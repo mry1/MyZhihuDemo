@@ -77,12 +77,41 @@ public class HomePagePresent extends BasePresenter {
 
     }
 
+    /**
+     *
+     * @param clear 是否将之前的list清空
+     * @param date
+     */
+    public void getMoreData1(final boolean clear, long date) {
+        RetrofitService.getInstance().getBeforeHomeStory(date)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HomeStory>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.showToast("加载失败，" + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(HomeStory story) {
+//                        System.out.println("story::" + story.toString());
+                        if (clear){
+                            mView.removeHeaderView();
+                        }
+                        mView.loadMoreDataByTag(clear, story);
+                    }
+                });
+    }
+
     @Override
     public void getMoreData() {
         Calendar calendar = Calendar.getInstance();
-//        System.out.println("===========");
-//        System.out.println("mDay:" + mDay);
-//        System.out.println("===========");
         calendar.set(mYear, mMonth, --mDay);
         RetrofitService.getInstance().getBeforeHomeStory(calendar.getTimeInMillis())
                 .subscribeOn(Schedulers.io())

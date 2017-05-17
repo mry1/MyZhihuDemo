@@ -8,5 +8,5 @@ import com.louis.myzhihudemo.base.ILoadDataView;
  */
 
 public interface IHomePageView extends ILoadDataView<HomeStory> {
-//    void loadData(HomeStory homeStory);
+    void loadMoreDataByTag(boolean clear, HomeStory homeStory);
 }
