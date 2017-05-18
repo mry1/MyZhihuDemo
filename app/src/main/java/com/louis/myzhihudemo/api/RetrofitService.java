@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.louis.myzhihudemo.AndroidApplication;
 import com.louis.myzhihudemo.api.bean.HomeStory;
+import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 import com.louis.myzhihudemo.utils.NetUtils;
@@ -151,9 +152,13 @@ public class RetrofitService {
 
     public Observable<HomeStory> getBeforeHomeStory(long date) {
         String sDate;
-        Date d = new Date(date + 24*60*60*1000);
+        Date d = new Date(date + 24 * 60 * 60 * 1000);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         sDate = format.format(d);
         return sNewsService.getBeforeHomeStory(sDate);
+    }
+
+    public Observable<StoryDetail> getStoryDetail(long id) {
+        return sNewsService.getStoryDetail(id);
     }
 }

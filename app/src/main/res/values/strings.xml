@@ -6,4 +6,10 @@
     <string name="nav_videos">视频</string>
     <string name="nav_setting">设置</string>
 
+    <!--settings_preference_fragment-->
+    <string name="network_error">网络出小差了，点击重试</string>
+    <string name="action_open_in_browser">在浏览器中打开</string>
+    <string name="refresh">刷新</string>
+
+
 </resources>

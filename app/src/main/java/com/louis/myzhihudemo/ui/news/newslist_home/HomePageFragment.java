@@ -13,12 +13,14 @@ import com.louis.myzhihudemo.base.BaseFragment;
 import com.louis.myzhihudemo.injector.components.DaggerHomePageComponent;
 import com.louis.myzhihudemo.injector.modules.HomePageModule;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.news.detail.NewsDetailActivity;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
 import com.louis.myzhihudemo.utils.SliderLayoutHelper;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -158,7 +160,9 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
      */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        ToastUtils.showToast("点击了新闻：" + position);
+        List<HomeStory.HomeStories> data = adapter.getData();
+        ToastUtils.showToast("点击了新闻：" + data.get(position).id);
+        NewsDetailActivity.launch(mContext, data.get(position).id);
 
     }
 

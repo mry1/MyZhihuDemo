@@ -10,6 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.louis.myzhihudemo.AndroidApplication;
+import com.louis.myzhihudemo.injector.components.ApplicationComponent;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.widget.EmptyLayout;
 
@@ -54,6 +56,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
 
+    protected abstract int getResId();
+
     /**
      * Dagger注入
      */
@@ -69,8 +73,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      * @param isRefresh
      */
     protected abstract void updateViews(boolean isRefresh);
-
-    protected abstract int getResId();
 
     @Override
     protected void onDestroy() {
@@ -111,6 +113,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (mSwipeRefresh != null) {
             mSwipeRefresh.setRefreshing(false);
         }
+    }
+
+    protected ApplicationComponent getAppComponent() {
+        AndroidApplication application = (AndroidApplication) getApplication();
+        return application.getAppComponent();
     }
 
     /**

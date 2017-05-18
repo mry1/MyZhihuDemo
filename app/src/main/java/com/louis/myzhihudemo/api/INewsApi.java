@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.api;
 
 import com.louis.myzhihudemo.api.bean.HomeStory;
+import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 
@@ -41,9 +42,13 @@ public interface INewsApi {
 
     /**
      * 获取之前的首页数据
+     *
      * @param date
      * @return
      */
     @GET("api/4/news/before/{date}")
     Observable<HomeStory> getBeforeHomeStory(@Path("date") String date);
+
+    @GET("api/4/news/{id}")
+    Observable<StoryDetail> getStoryDetail(@Path("id") long id);
 }
