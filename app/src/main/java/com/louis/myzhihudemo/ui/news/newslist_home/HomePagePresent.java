@@ -68,7 +68,6 @@ public class HomePagePresent extends BasePresenter {
 
                     @Override
                     public void onNext(HomeStory homeStory) {
-                        System.out.println("homeStory::" + homeStory);
                         mView.loadData(homeStory);
 
                     }

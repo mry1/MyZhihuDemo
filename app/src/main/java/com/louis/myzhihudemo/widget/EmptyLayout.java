@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.ToastUtils;
 
@@ -36,6 +37,8 @@ public class EmptyLayout extends FrameLayout {
     TextView mTvEmptyMessage;
     @BindView(R.id.rl_empty_container)
     View mRlEmptyContainer;
+    @BindView(R.id.empty_loading)
+    SpinKitView mEmptyLoading;
 
     public EmptyLayout(Context context) {
         this(context, null);
@@ -81,11 +84,14 @@ public class EmptyLayout extends FrameLayout {
             case STATUS_LOADING:
                 setVisibility(VISIBLE);
                 mRlEmptyContainer.setVisibility(GONE);
+                mEmptyLoading.setVisibility(VISIBLE);
+
                 break;
             case STATUS_NO_DATA:
                 break;
             case STATUS_NO_NET:
                 setVisibility(VISIBLE);
+                mEmptyLoading.setVisibility(GONE);
                 mRlEmptyContainer.setVisibility(VISIBLE);
                 break;
             case STATUS_HIDE:
@@ -97,21 +103,23 @@ public class EmptyLayout extends FrameLayout {
 
     /**
      * 获取状态
+     *
      * @return
      */
-    public int getEmptyStatus(){
+    public int getEmptyStatus() {
         return mEmptyStatus;
     }
 
     @OnClick(R.id.tv_net_error)
-    public void onClick(){
-        if (mOnRetryListener != null){
+    public void onClick() {
+        if (mOnRetryListener != null) {
             mOnRetryListener.onRetry();
         }
     }
 
     /**
      * 设置重试监听器
+     *
      * @param onRetryListener
      */
     public void setRetryListener(OnRetryListener onRetryListener) {

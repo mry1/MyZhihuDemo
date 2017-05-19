@@ -14,20 +14,22 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.base.BaseSwipeBackActivity;
 import com.louis.myzhihudemo.injector.components.DaggerNewsDetailComponent;
 import com.louis.myzhihudemo.injector.modules.NewsDetailModule;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.PreferenceUtil;
 import com.louis.myzhihudemo.utils.SwipeRefreshHelper;
+import com.louis.myzhihudemo.utils.ToastUtils;
 import com.louis.myzhihudemo.widget.customtabs.CustomFallback;
 import com.louis.myzhihudemo.widget.customtabs.CustomTabActivityHelper;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 
@@ -35,7 +37,7 @@ import butterknife.BindView;
  * Created by Louis on 2017/5/18.
  */
 
-public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent> {
+public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent> implements INewsDetailView {
     @BindView(R.id.image_view)
     ImageView imageView;
     @BindView(R.id.toolbar)
@@ -48,7 +50,7 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
     WebView webView;
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
-    @BindView(R.id.refreshLayout)
+    @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -74,7 +76,8 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
         SwipeRefreshHelper.init(mRefreshLayout, new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.getData(true);
+                initData();
+//                mPresenter.getData(true);
             }
         });
 
@@ -172,6 +175,39 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public void loadData(StoryDetail storyDetail) {
+
+
+    }
+
+    @Override
+    public void setCollapsingToolbarLayoutTitle(String title) {
+        toolbarLayout.setTitle(title);
+        toolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        toolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+//        toolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBarPlus1);
+//        toolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBarPlus1);
+    }
+
+    @Override
+    public void loadImage(String url) {
+        Picasso.with(mContext).load(url).into(imageView);
+
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        webView.loadUrl(url);
+
+    }
+
+    @Override
+    public void loadDataWithBaseURL(String url) {
+        webView.loadDataWithBaseURL("x-data://base", url, "text/html", "utf-8", null);
+
+    }
+
     class JavascriptInterface {
         private Context context;
 
@@ -183,6 +219,7 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
         @android.webkit.JavascriptInterface
         public void onImageClick(String img) {
 //            UIHelper.showBigImage(mContext, img);
+            ToastUtils.showToast("img");
         }
     }
 }

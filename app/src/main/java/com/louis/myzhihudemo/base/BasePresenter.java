@@ -7,7 +7,7 @@ import android.content.Context;
  */
 
 public abstract class BasePresenter {
-    protected Context mContext;
+    private Context mContext;
 
 
     protected void setContext(Context context) {
