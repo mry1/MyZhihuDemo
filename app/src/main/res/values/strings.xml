@@ -12,4 +12,20 @@
     <string name="refresh">刷新</string>
 
 
+    <string name="action_add_to_bookmarks">添加到收藏夹</string>
+    <string name="action_copy_link">复制链接</string>
+    <string name="action_copy_text">复制文本</string>
+    <string name="action_share_as_text">作为文本分享给好友</string>
+    <string name="action_delete_from_bookmarks">取消收藏</string>
+    <string name="copy_success">复制成功</string>
+    <string name="share_to">分享至</string>
+    <string name="bookmark_success">收藏成功</string>
+    <string name="bookmark_fail">收藏失败</string>
+    <string name="unbookmark_success">取消收藏成功</string>
+    <string name="unbookmark_fail">取消收藏失败</string>
+    <string name="search_bookmarks">搜索</string>
+    <string name="no_bookmark">您还没有收藏过内容呢~~~</string>
+    <string name="home_show">首页特别展示</string>
+    <string name="title_activity_open_lisence">开源许可</string>
+
 </resources>

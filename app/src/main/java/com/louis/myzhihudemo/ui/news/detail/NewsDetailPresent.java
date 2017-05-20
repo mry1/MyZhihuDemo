@@ -1,13 +1,14 @@
 package com.louis.myzhihudemo.ui.news.detail;
 
 import android.content.res.Configuration;
+import android.text.Html;
 
 import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.base.BasePresenter;
+import com.louis.myzhihudemo.utils.CopyTextToClipboardUtil;
 import com.louis.myzhihudemo.utils.ToastUtils;
 
-import io.reactivex.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -19,6 +20,7 @@ import rx.schedulers.Schedulers;
 
 public class NewsDetailPresent extends BasePresenter {
     private NewsDetailActivity mView;
+    private StoryDetail mStoryDetail;
 
     public NewsDetailPresent(NewsDetailActivity view) {
         mView = view;
@@ -50,11 +52,13 @@ public class NewsDetailPresent extends BasePresenter {
                     public void onError(Throwable e) {
                         ToastUtils.showToast("网络有问题" + e.getMessage());
                         mView.showNetError();
+                        mView.finishRefresh();
 
                     }
 
                     @Override
                     public void onNext(StoryDetail storyDetail) {
+                        mStoryDetail = storyDetail;
                         mView.setCollapsingToolbarLayoutTitle(storyDetail.title);
                         mView.loadImage(storyDetail.image);
 
@@ -77,6 +81,47 @@ public class NewsDetailPresent extends BasePresenter {
     @Override
     public void getMoreData() {
 
+    }
+
+    public void showBottomSheetDialog() {
+        if (mStoryDetail == null) {
+            mView.showNetError();
+        } else {
+            mView.showBottomSheetDialog();
+        }
+
+    }
+
+    public boolean ifBookMarked(long storyID) {
+
+        return false;
+    }
+
+    public void unbookmarkStory() {
+
+    }
+
+    public void bookmarkStory() {
+
+    }
+
+    public void copyLink() {
+        CopyTextToClipboardUtil.copyTextToClipboard(mView, Html.fromHtml(mStoryDetail.share_url));
+        mView.showCopySuccess();
+    }
+
+    public void openInBrowser() {
+        mView.openInBrowser(mStoryDetail.share_url);
+
+    }
+
+    public void copyText() {
+        CopyTextToClipboardUtil.copyTextToClipboard(mView, Html.fromHtml(mStoryDetail.body));
+        mView.showCopySuccess();
+    }
+
+    public void shareAsText() {
+        mView.shareAsText(mStoryDetail.title, mStoryDetail.share_url);
     }
 
     private String convertBody(String preResult) {

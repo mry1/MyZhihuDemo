@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -14,10 +15,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.base.BaseSwipeBackActivity;
@@ -69,6 +73,7 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
                 .newsDetailModule(new NewsDetailModule(this))
                 .build()
                 .inject(this);
+
     }
 
     @Override
@@ -80,12 +85,14 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
 //                mPresenter.getData(true);
             }
         });
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void initData() {
         mNewsID = getIntent().getLongExtra(NEWS_ID_KEY, 0);
+
         mPresenter.getNewsDetail(mNewsID);
 
         webViewSettings();
@@ -94,6 +101,8 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
 
     private void webViewSettings() {
         webView.setScrollbarFadingEnabled(true);
+
+
         WebSettings webViewSettings = webView.getSettings();
         //能够和js交互
         webViewSettings.setJavaScriptEnabled(true);
@@ -176,9 +185,103 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.action_more:
+                mPresenter.showBottomSheetDialog();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void loadData(StoryDetail storyDetail) {
 
 
+    }
+
+    public void showBottomSheetDialog() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(mContext);
+        View view = View.inflate(mContext, R.layout.dialog_detial, null);
+        final boolean bookMarked = mPresenter.ifBookMarked(mNewsID);
+        if (bookMarked) {
+            ((TextView) view.findViewById(R.id.textView)).setText(R.string.action_delete_from_bookmarks);
+            ((ImageView) view.findViewById(R.id.imageView))
+                    .setColorFilter(getResources().getColor(R.color.colorPrimary));
+        }
+        view.findViewById(R.id.layout_bookmark).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bookMarked) {
+                    mPresenter.unbookmarkStory();
+                } else {
+                    mPresenter.bookmarkStory();
+                }
+                dialog.dismiss();
+            }
+
+        });
+        view.findViewById(R.id.layout_copy_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.copyLink();
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.layout_open_in_browser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.openInBrowser();
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.copyText();
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.layout_share_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.shareAsText();
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    @Override
+    public void showCopySuccess() {
+        ToastUtils.showSnackBar(coordinatorLayout, R.string.copy_success);
+    }
+
+    @Override
+    public void openInBrowser(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
+
+    @Override
+    public void shareAsText(String title, String url) {
+        Intent shareIntent = new Intent().setAction(Intent.ACTION_SEND).setType("text/plain");
+        StringBuilder shareText = new StringBuilder();
+        shareText.append(title)
+                .append(" ")
+                .append(url)
+                .append(" ,分享自 我的知乎 By Louis");
+
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText.toString());
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
     }
 
     @Override
@@ -219,7 +322,15 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
         @android.webkit.JavascriptInterface
         public void onImageClick(String img) {
 //            UIHelper.showBigImage(mContext, img);
-            ToastUtils.showToast("img");
+            ToastUtils.showToast(img);
         }
+    }
+
+    /**
+     * 网络不好，点击重试
+     */
+    @Override
+    public void onRetry() {
+        initData();
     }
 }

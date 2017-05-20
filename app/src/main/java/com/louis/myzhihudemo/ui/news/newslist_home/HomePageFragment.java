@@ -1,5 +1,6 @@
 package com.louis.myzhihudemo.ui.news.newslist_home;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,8 +98,8 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
         SliderLayoutHelper.init(mContext, mSlider, homeStory, new BaseSliderView.OnSliderClickListener() {
             @Override
             public void onSliderClick(BaseSliderView slider) {
-                ToastUtils.showToast("点击了大图");
-
+                Bundle bundle = slider.getBundle();
+                NewsDetailActivity.launch(mContext, bundle.getLong(SliderLayoutHelper.NEWS_ID_KEY));
             }
         });
         mStoryAdapter.addHeaderView(headerView);
@@ -125,9 +126,6 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
 
     @Override
     public void loadMoreData(HomeStory data) {
-//        System.out.println("=======");
-//        System.out.println(data.stories.toString());
-//        System.out.println("=======");
         mStoryAdapter.loadMoreComplete();
         mStoryAdapter.addData(data.stories);
 

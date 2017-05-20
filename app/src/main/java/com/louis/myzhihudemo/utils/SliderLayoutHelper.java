@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.utils;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -13,6 +14,7 @@ import com.louis.myzhihudemo.api.bean.HomeStory;
  */
 
 public class SliderLayoutHelper {
+    public static final String NEWS_ID_KEY = "newsIdKey";
 
     public static void init(Context context, SliderLayout layout, HomeStory stories) {
         init(context, layout, stories, null);
@@ -26,6 +28,10 @@ public class SliderLayoutHelper {
                     .empty(DefIconFactory.provideIcon())
                     .setOnSliderClickListener(onSliderClickListener);
             layout.addSlider(textSliderView);
+
+            Bundle bundle = new Bundle();
+            bundle.putLong(NEWS_ID_KEY, story.id);
+            textSliderView.bundle(bundle);
         }
         layout.setPresetIndicator(SliderLayout.PresetIndicators.Right_Bottom);
         layout.setPresetTransformer(SliderLayout.Transformer.Accordion);// 设置切换动画

@@ -1,6 +1,8 @@
 package com.louis.myzhihudemo.utils;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -26,5 +28,11 @@ public class ToastUtils {
         Toast.makeText(sContext, msg, Toast.LENGTH_SHORT).show();
     }
 
+    public static void showSnackBar(View view, int resId) {
+        Snackbar.make(view, resId, Snackbar.LENGTH_SHORT).show();
+    }
 
+    public static void showSnackBar(View view, String text) {
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+    }
 }

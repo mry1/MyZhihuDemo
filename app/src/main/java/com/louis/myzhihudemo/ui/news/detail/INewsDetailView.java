@@ -21,4 +21,10 @@ public interface INewsDetailView {
     void loadUrl(String url);
 
     void loadDataWithBaseURL(String url);
+
+    void showCopySuccess();
+
+    void openInBrowser(String url);
+
+    void shareAsText(String title, String url);
 }

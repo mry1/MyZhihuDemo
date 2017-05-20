@@ -14,12 +14,14 @@ import com.louis.myzhihudemo.base.BaseFragment;
 import com.louis.myzhihudemo.injector.components.DaggerNewsListComponent;
 import com.louis.myzhihudemo.injector.modules.NewsListModule;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.news.detail.NewsDetailActivity;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,7 +31,7 @@ import butterknife.BindView;
  * Created by Louis on 2017/5/13.
  */
 
-public class NewsListFragment extends BaseFragment<NewsListPresent> implements INewsListView {
+public class NewsListFragment extends BaseFragment<NewsListPresent> implements INewsListView, BaseQuickAdapter.OnItemClickListener {
     private static final String STORY_TYPE_KEY = "story_type_key";
     private int storyID;
     @BindView(R.id.rv_news_list)
@@ -82,7 +84,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
 
             }
         }, mRvStoriesList);
-
+        mStoriesListAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -103,5 +105,13 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
             Picasso.with(getContext()).load(stories.background).into(mThemeThumbnail);
             mStoriesListAdapter.addHeaderView(mView);
         }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        List<StoryList.Story> data = adapter.getData();
+        NewsDetailActivity.launch(mContext, data.get(position).id);
+
+
     }
 }

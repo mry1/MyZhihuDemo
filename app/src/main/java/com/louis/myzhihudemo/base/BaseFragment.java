@@ -115,6 +115,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         }
     }
 
+    /**
+     * 网络不好，点击重试
+     */
     @Override
     public void onRetry() {
         ToastUtils.showToast("重试！！");
