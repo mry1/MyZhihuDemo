@@ -4,7 +4,8 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.example.louis.myzhihudemo"
+//        applicationId "com.example.louis.myzhihudemo"
+        applicationId "com.louis.myzhihudemo"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
@@ -16,9 +17,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-//        greendao {
-//            schemaVersion 4
-//        }
+        greendao {
+            schemaVersion 4
+        }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

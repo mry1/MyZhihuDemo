@@ -49,6 +49,11 @@ public interface INewsApi {
     @GET("api/4/news/before/{date}")
     Observable<HomeStory> getBeforeHomeStory(@Path("date") String date);
 
+    /**
+     * 获取故事详情
+     * @param id
+     * @return
+     */
     @GET("api/4/news/{id}")
     Observable<StoryDetail> getStoryDetail(@Path("id") long id);
 }

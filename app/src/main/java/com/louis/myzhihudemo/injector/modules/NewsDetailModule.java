@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.injector.modules;
 
 import com.louis.myzhihudemo.injector.PerFragment;
+import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.news.detail.NewsDetailActivity;
 import com.louis.myzhihudemo.ui.news.detail.NewsDetailPresent;
 
@@ -22,8 +23,8 @@ public class NewsDetailModule {
 
     @PerFragment
     @Provides
-    public NewsDetailPresent provideNewsDetailPresent() {
-        return new NewsDetailPresent(mView);
+    public NewsDetailPresent provideNewsDetailPresent(DaoSession daoSession) {
+        return new NewsDetailPresent(mView, daoSession.getStoryColumnsDao());
     }
 
 }

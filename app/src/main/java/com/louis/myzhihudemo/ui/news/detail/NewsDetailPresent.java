@@ -6,6 +6,8 @@ import android.text.Html;
 import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.base.BasePresenter;
+import com.louis.myzhihudemo.local.table.StoryColumns;
+import com.louis.myzhihudemo.local.table.StoryColumnsDao;
 import com.louis.myzhihudemo.utils.CopyTextToClipboardUtil;
 import com.louis.myzhihudemo.utils.ToastUtils;
 
@@ -21,9 +23,12 @@ import rx.schedulers.Schedulers;
 public class NewsDetailPresent extends BasePresenter {
     private NewsDetailActivity mView;
     private StoryDetail mStoryDetail;
+    private StoryColumnsDao mDao;
+    private StoryColumns mStoryColumns;
 
-    public NewsDetailPresent(NewsDetailActivity view) {
+    public NewsDetailPresent(NewsDetailActivity view, StoryColumnsDao dao) {
         mView = view;
+        mDao = dao;
     }
 
     /**
@@ -59,6 +64,8 @@ public class NewsDetailPresent extends BasePresenter {
                     @Override
                     public void onNext(StoryDetail storyDetail) {
                         mStoryDetail = storyDetail;
+                        mStoryColumns = new StoryColumns(mStoryDetail.id, 0);
+
                         mView.setCollapsingToolbarLayoutTitle(storyDetail.title);
                         mView.loadImage(storyDetail.image);
 
@@ -93,15 +100,19 @@ public class NewsDetailPresent extends BasePresenter {
     }
 
     public boolean ifBookMarked(long storyID) {
-
-        return false;
+        StoryColumns load = mDao.load(storyID);
+        return load == null ? false : load.getBOOKMARK() == 1;
     }
 
     public void unbookmarkStory() {
-
+        mStoryColumns.setBOOKMARK(0);
+        mDao.update(mStoryColumns);
     }
 
     public void bookmarkStory() {
+        mStoryColumns.setBOOKMARK(1);
+
+        mDao.update(mStoryColumns);
 
     }
 

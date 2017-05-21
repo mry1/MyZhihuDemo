@@ -307,6 +307,8 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
 
     @Override
     public void loadDataWithBaseURL(String url) {
+        System.out.println("我的知乎---------" + url);
+
         webView.loadDataWithBaseURL("x-data://base", url, "text/html", "utf-8", null);
 
     }
