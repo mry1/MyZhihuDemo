@@ -64,7 +64,7 @@ public class NewsDetailPresent extends BasePresenter {
                     @Override
                     public void onNext(StoryDetail storyDetail) {
                         mStoryDetail = storyDetail;
-                        mStoryColumns = new StoryColumns(mStoryDetail.id, 0);
+                        mStoryColumns = new StoryColumns(mStoryDetail.id, StoryColumns.UNBOOKED_STORY);
 
                         mView.setCollapsingToolbarLayoutTitle(storyDetail.title);
                         mView.loadImage(storyDetail.image);
@@ -105,13 +105,13 @@ public class NewsDetailPresent extends BasePresenter {
     }
 
     public void unbookmarkStory() {
-        mStoryColumns.setBOOKMARK(0);
+        mStoryColumns.setBOOKMARK(StoryColumns.UNBOOKED_STORY);
         mDao.update(mStoryColumns);
     }
 
     public void bookmarkStory() {
-        mStoryColumns.setBOOKMARK(1);
-
+        // TODO: 2017/5/24 收藏文章，需要增加新的字段
+        mStoryColumns.setBOOKMARK(StoryColumns.BOOKED_STORY);
         mDao.update(mStoryColumns);
 
     }

@@ -8,10 +8,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.base.BaseActivity;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.ui.news.main.NewsMainFragment;
@@ -26,6 +29,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     private SparseArray<String> mSparseTags = new SparseArray<>();
+
+    private int mItemId;
+    private long mExitTime = 0;
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -44,22 +51,17 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case R.id.nav_settings:
 
                     break;
-
             }
-
+            mItemId = -1;
 
             return true;
         }
     });
 
 
-    private int mItemId;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
+    protected int getResId() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -83,6 +85,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void updateViews(boolean isRefresh) {
+        mNavView.setCheckedItem(R.id.nav_news);
+        replaceFragment(R.id.fl_container, new NewsMainFragment(), mSparseTags.get(R.id.nav_news));
 
     }
 
@@ -101,11 +105,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    protected int getResId() {
-        return R.layout.activity_main;
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         mDrawerLayout.closeDrawer(GravityCompat.START);
         if (item.isChecked()) {
@@ -113,5 +112,38 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
         mItemId = item.getItemId();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // 获取堆栈里有几个
+        final int stackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else if (stackEntryCount == 1) {
+            // 如果剩一个说明在主页，提示按两次退出app
+            _exit();
+        } else {
+            // 获取上一个堆栈中保存的是哪个页面，根据name来设置导航项的选中状态
+            final String tagName = getSupportFragmentManager().getBackStackEntryAt(stackEntryCount - 2).getName();
+            int index =   mSparseTags.indexOfValue(tagName);
+            mNavView.setCheckedItem(mSparseTags.keyAt(index));
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * 退出
+     */
+    private void _exit() {
+        if (System.currentTimeMillis() - mExitTime > 2000) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
+    }
+    public void openDrawer(){
+        mDrawerLayout.openDrawer(Gravity.LEFT);
     }
 }

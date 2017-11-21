@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
@@ -15,6 +17,7 @@ import com.louis.myzhihudemo.injector.components.DaggerNewsMainComponent;
 import com.louis.myzhihudemo.injector.modules.NewsMainModule;
 import com.louis.myzhihudemo.local.table.NewsTypeInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.home.HomeActivity;
 import com.louis.myzhihudemo.ui.news.newslist.NewsListFragment;
 import com.louis.myzhihudemo.ui.news.newslist_home.HomePageFragment;
 
@@ -56,6 +59,7 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresent> implements I
 
     }
 
+
     @Override
     protected void initViews() {
         initToolbar(mToolbar, true, "新闻");
@@ -83,6 +87,13 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresent> implements I
             }
         });
 
+        // TODO: 2017/5/24 查看MVPAPP实现该功能的方法
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).openDrawer();
+            }
+        });
     }
 
     @Override
