@@ -33,6 +33,12 @@ public class AndroidApplication extends Application {
         initConfig();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+//        MultiDex.install(this);
+    }
+
     public static Context getContext() {
         return context;
     }

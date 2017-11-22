@@ -18,6 +18,7 @@ import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.base.BaseActivity;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.ui.news.main.NewsMainFragment;
+import com.louis.myzhihudemo.ui.photo.main.PhotoMainFragment;
 
 import butterknife.BindView;
 
@@ -39,16 +40,21 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case R.id.nav_news:
+                    // 点击“新闻”按钮
                     replaceFragment(R.id.fl_container, new NewsMainFragment(), mSparseTags.get(R.id.nav_news));
 
                     break;
                 case R.id.nav_photos:
+                    // 点击“图片”按钮
+                    replaceFragment(R.id.fl_container, new PhotoMainFragment(), mSparseTags.get(R.id.nav_photos));
 
                     break;
                 case R.id.nav_videos:
 
+
                     break;
                 case R.id.nav_settings:
+
 
                     break;
             }
@@ -126,7 +132,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else {
             // 获取上一个堆栈中保存的是哪个页面，根据name来设置导航项的选中状态
             final String tagName = getSupportFragmentManager().getBackStackEntryAt(stackEntryCount - 2).getName();
-            int index =   mSparseTags.indexOfValue(tagName);
+            int index = mSparseTags.indexOfValue(tagName);
             mNavView.setCheckedItem(mSparseTags.keyAt(index));
             super.onBackPressed();
         }
@@ -143,7 +149,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             finish();
         }
     }
-    public void openDrawer(){
+
+    public void openDrawer() {
         mDrawerLayout.openDrawer(Gravity.LEFT);
     }
 }
