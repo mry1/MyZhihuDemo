@@ -9,6 +9,7 @@ import dagger.Component;
 /**
  * Created by louis on 17-11-22.
  */
+
 @PerFragment
 @Component(dependencies = ApplicationComponent.class, modules = PhotoMainModule.class)
 public interface PhotoMainComponent {

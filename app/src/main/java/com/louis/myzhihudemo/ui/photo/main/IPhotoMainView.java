@@ -5,4 +5,7 @@ package com.louis.myzhihudemo.ui.photo.main;
  */
 
 public interface IPhotoMainView {
+
+    public void loadData();
+
 }

@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.ui.photo.main;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,6 +12,11 @@ import com.louis.myzhihudemo.injector.components.DaggerPhotoMainComponent;
 import com.louis.myzhihudemo.injector.modules.PhotoMainModule;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.ui.home.HomeActivity;
+import com.louis.myzhihudemo.ui.photo.beauty.BeautyListFragment;
+import com.louis.myzhihudemo.ui.photo.news.PhotoNewsFragment;
+import com.louis.myzhihudemo.ui.photo.welfare.WelfareListFragment;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -31,6 +37,8 @@ public class PhotoMainFragment extends BaseFragment<PhotoMainPresent> implements
     protected ViewPager mViewPager;
     @Inject
     ViewPagerAdapter mPagerAdapter;
+    private ArrayList<Fragment> fragments;
+    private ArrayList<String> titles;
 
     @Override
     protected int attachLayoutRes() {
@@ -70,7 +78,24 @@ public class PhotoMainFragment extends BaseFragment<PhotoMainPresent> implements
 
     @Override
     protected void updateViews(boolean isRefresh) {
+        System.out.println("updateViews:" + isRefresh);
         mPresenter.getData(isRefresh);
+
+    }
+
+    @Override
+    public void loadData() {  fragments = new ArrayList<>();
+        fragments.add(new BeautyListFragment());
+        fragments.add(new PhotoNewsFragment());
+        fragments.add(new WelfareListFragment());
+        titles = new ArrayList<>();
+        titles.add("美图");
+        titles.add("福利");
+        titles.add("生活");
+
+
+        mPagerAdapter.setItems(fragments, titles);
+
 
     }
 }

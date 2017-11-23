@@ -58,7 +58,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null) {
-            mRootView = inflater.inflate(attachLayoutRes(), null);
+            int resource = attachLayoutRes();
+            mRootView = inflater.inflate(resource, null);
             ButterKnife.bind(this, mRootView);
             initInjector();
             initViews();
@@ -85,7 +86,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         Log.d(TAG, "setUserVisibleHint...." + isVisibleToUser);
         if (isVisibleToUser && isVisible() && mRootView != null && !mIsMulti) {
             mIsMulti = true;
-            updateViews(false);
+//            updateViews(false);
 
         } else {
             super.setUserVisibleHint(isVisibleToUser);
@@ -146,7 +147,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             SwipeRefreshHelper.init(mSwipeRefresh, new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    updateViews(true);
+//                    updateViews(true);
 //                    onRefreshViews();
                 }
             });

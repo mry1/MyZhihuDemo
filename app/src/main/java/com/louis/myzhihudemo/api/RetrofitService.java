@@ -161,4 +161,7 @@ public class RetrofitService {
     public Observable<StoryDetail> getStoryDetail(long id) {
         return sNewsService.getStoryDetail(id);
     }
+
+
+
 }

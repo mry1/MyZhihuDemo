@@ -9,4 +9,11 @@
 
     <!--newsList-->
     <dimen name="news_ads_height">180dp</dimen>
+
+    <!-- Photo -->
+    <dimen name="photo_set_desc_height">400dp</dimen>
+    <dimen name="photo_set_desc_fix_height">150dp</dimen>
+    <dimen name="photo_large_height">170dp</dimen>
+    <dimen name="photo_small_height">90dp</dimen>
+    <dimen name="photo_margin_width">1dp</dimen>
 </resources>

@@ -16,6 +16,8 @@ public class PhotoMainPresent extends BasePresenter {
     @Override
     public void getData(boolean isRefresh) {
 
+        mView.loadData();
+
     }
 
     @Override

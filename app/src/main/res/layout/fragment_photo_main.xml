@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_layout_height"
             app:tabIndicatorColor="@android:color/white"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabTextColor="@android:color/white" />
 
     </android.support.design.widget.AppBarLayout>
