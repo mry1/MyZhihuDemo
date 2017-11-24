@@ -45,8 +45,8 @@ public class BeautyListAdapter extends BaseQuickAdapter<BeautyPhotoInfo, BaseVie
         ViewGroup.LayoutParams layoutParams = ivPhoto.getLayoutParams();
         layoutParams.width = mPhotoWidth;
         layoutParams.height = photoHeight;
-        Picasso.with(mContext).load(item.getImgsrc()).placeholder(DefIconFactory.provideIcon()).into(ivPhoto);
-        helper.setText(R.id.tv_title, item.getTitle());
+        Picasso.with(mContext).load(item.getUrl()).placeholder(DefIconFactory.provideIcon()).into(ivPhoto);
+        helper.setText(R.id.tv_title, item.getCreatedAt());
 
     }
 

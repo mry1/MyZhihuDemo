@@ -10,71 +10,131 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class BeautyPhotoInfo {
     @Id
-    private String imgsrc;
+    private String id;
+    private String createdAt;
+    private String desc;
+    private String publishedAt;
+    private String source;
+    private String type;
+    private String url;
+    private boolean used;
+    private String who;
+    // 保存图片宽高
     private String pixel;
-    private String docid;
-    private String title;
-    // 喜欢
-    private boolean isLove;
-    // 点赞
-    private boolean isPraise;
-    // 下载
-    private boolean isDownload;
-    @Generated(hash = 215652306)
-    public BeautyPhotoInfo(String imgsrc, String pixel, String docid, String title,
-            boolean isLove, boolean isPraise, boolean isDownload) {
-        this.imgsrc = imgsrc;
+
+    @Generated(hash = 512096145)
+    public BeautyPhotoInfo(String id, String createdAt, String desc,
+                           String publishedAt, String source, String type, String url,
+                           boolean used, String who, String pixel) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.desc = desc;
+        this.publishedAt = publishedAt;
+        this.source = source;
+        this.type = type;
+        this.url = url;
+        this.used = used;
+        this.who = who;
         this.pixel = pixel;
-        this.docid = docid;
-        this.title = title;
-        this.isLove = isLove;
-        this.isPraise = isPraise;
-        this.isDownload = isDownload;
     }
 
     @Generated(hash = 827125854)
     public BeautyPhotoInfo() {
     }
-    public String getImgsrc() {
-        return this.imgsrc;
+
+    public String getId() {
+        return this.id;
     }
-    public void setImgsrc(String imgsrc) {
-        this.imgsrc = imgsrc;
+
+    public void setId(String id) {
+        this.id = id;
     }
+
+    public String getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getDesc() {
+        return this.desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getPublishedAt() {
+        return this.publishedAt;
+    }
+
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
+    public String getSource() {
+        return this.source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public boolean getUsed() {
+        return this.used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    public String getWho() {
+        return this.who;
+    }
+
+    public void setWho(String who) {
+        this.who = who;
+    }
+
     public String getPixel() {
         return this.pixel;
     }
+
     public void setPixel(String pixel) {
         this.pixel = pixel;
     }
-    public String getDocid() {
-        return this.docid;
-    }
-    public void setDocid(String docid) {
-        this.docid = docid;
-    }
-    public String getTitle() {
-        return this.title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public boolean getIsLove() {
-        return this.isLove;
-    }
-    public void setIsLove(boolean isLove) {
-        this.isLove = isLove;
-    }
-    public boolean getIsPraise() {
-        return this.isPraise;
-    }
-    public void setIsPraise(boolean isPraise) {
-        this.isPraise = isPraise;
-    }
-    public boolean getIsDownload() {
-        return this.isDownload;
-    }
-    public void setIsDownload(boolean isDownload) {
-        this.isDownload = isDownload;
+
+    @Override
+    public String toString() {
+        return "BeautyPhotoInfo{" +
+                "id='" + id + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", desc='" + desc + '\'' +
+                ", publishedAt='" + publishedAt + '\'' +
+                ", source='" + source + '\'' +
+                ", type='" + type + '\'' +
+                ", url='" + url + '\'' +
+                ", used=" + used +
+                ", who='" + who + '\'' +
+                ", pixel='" + pixel + '\'' +
+                '}';
     }
 }

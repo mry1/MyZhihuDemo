@@ -122,6 +122,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     @Override
     public void onRetry() {
         ToastUtils.showToast("重试！！");
+        mPresenter.getData(true);
 
     }
 

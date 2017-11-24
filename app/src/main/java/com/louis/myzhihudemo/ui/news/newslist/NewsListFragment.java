@@ -85,6 +85,7 @@ public class NewsListFragment extends BaseFragment<NewsListPresent> implements I
             }
         }, mRvStoriesList);
         mStoriesListAdapter.setOnItemClickListener(this);
+        mStoriesListAdapter.isFirstOnly(false);
     }
 
     @Override

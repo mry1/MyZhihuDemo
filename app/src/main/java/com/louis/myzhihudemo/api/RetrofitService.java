@@ -3,10 +3,12 @@ package com.louis.myzhihudemo.api;
 import android.support.annotation.NonNull;
 
 import com.louis.myzhihudemo.AndroidApplication;
+import com.louis.myzhihudemo.adapter.item.BeautyPhotoList;
 import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
+import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.utils.NetUtils;
 import com.orhanobut.logger.Logger;
 
@@ -16,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -30,6 +33,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Louis on 2017/4/22.
@@ -38,12 +44,15 @@ import rx.Observable;
 public class RetrofitService {
 
     private static final String BASE_URL = "http://news-at.zhihu.com/";
+    private static final String BEAUTY_HOST = "http://gank.io/";
+
     //设缓存有效期为1天
     static final long CACHE_STALE_SEC = 60 * 60 * 24 * 1;
     //查询缓存的Cache-Control设置，为if-only-cache时只查询缓存而不会请求服务器，max-stale可以配合设置缓存失效时间
     private static final String CACHE_CONTROL_CACHE = "only-if-cached, max-stale=" + CACHE_STALE_SEC;
     private static INewsApi sNewsService;
     private static RetrofitService mInstance;
+    private static IPhotoApi sBeautyService;
 
     private RetrofitService() {
     }
@@ -123,6 +132,14 @@ public class RetrofitService {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         sNewsService = retrofit.create(INewsApi.class);
+
+        retrofit = new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(BEAUTY_HOST)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        sBeautyService = retrofit.create(IPhotoApi.class);
     }
 
     @NonNull
@@ -162,6 +179,36 @@ public class RetrofitService {
         return sNewsService.getStoryDetail(id);
     }
 
+    /**
+     * 获取美图页面数据
+     *
+     * @param page
+     * @return
+     */
+    public Observable<BeautyPhotoInfo> getBeautyPhotoList(int page) {
+        return sBeautyService.getBeautyPhoto(page)
+                .flatMap(flatmapBeautyPhoto())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 类型转换
+     *
+     * @return
+     */
+    @NonNull
+    private static Func1<BeautyPhotoList, Observable<BeautyPhotoInfo>> flatmapBeautyPhoto() {
+        return new Func1<BeautyPhotoList, Observable<BeautyPhotoInfo>>() {
+            @Override
+            public Observable<BeautyPhotoInfo> call(BeautyPhotoList beautyPhotoList) {
+                if (beautyPhotoList.getResults() == null) {
+                    return Observable.empty();
+                }
+                return Observable.from(beautyPhotoList.getResults());
+            }
+        };
+    }
 
 
 }

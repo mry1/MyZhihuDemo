@@ -82,5 +82,6 @@ dependencies {
 
     // 设置支持分包编译
     compile 'com.android.support:multidex:1.0.1'
-
+    // dragsloplayout
+    compile 'com.github.Rukey7:DragSlopLayout:1.0.3'
 }

@@ -9,9 +9,12 @@ import com.louis.myzhihudemo.adapter.BeautyListAdapter;
 import com.louis.myzhihudemo.base.BaseFragment;
 import com.louis.myzhihudemo.injector.components.DaggerBeautyListComponent;
 import com.louis.myzhihudemo.injector.modules.BeautyListModule;
+import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
 import com.louis.myzhihudemo.utils.ToastUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,7 +25,7 @@ import butterknife.BindView;
  * 美图页面
  */
 
-public class BeautyListFragment extends BaseFragment<BeautyListPresent> implements BaseQuickAdapter.OnItemChildClickListener {
+public class BeautyListFragment extends BaseFragment<BeautyListPresent> implements BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.frame_layout)
     FrameLayout frame_layout;
     @BindView(R.id.rv_photo_list)
@@ -47,14 +50,15 @@ public class BeautyListFragment extends BaseFragment<BeautyListPresent> implemen
 
     @Override
     protected void initViews() {
-        RecyclerViewHelper.initRecyclerView(mContext, mRvPhotoList, false, mAdapter);
+        RecyclerViewHelper.initRecyclerViewSV(mContext, mRvPhotoList, false, mAdapter, 2);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 mPresenter.getMoreData();
             }
         }, mRvPhotoList);
-        mAdapter.setOnItemChildClickListener(this);
+        mAdapter.setOnItemClickListener(this);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
     }
 
     @Override
@@ -62,12 +66,41 @@ public class BeautyListFragment extends BaseFragment<BeautyListPresent> implemen
         mPresenter.getData(isRefresh);
     }
 
-    @Override
-    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        ToastUtils.showSnackBar(frame_layout, position);
+
+    public void loadData(List<BeautyPhotoInfo> data) {
+        mAdapter.setNewData(data);
     }
 
-    public void loadData() {
+    /**
+     * 加载更多
+     *
+     * @param data
+     */
+    public void loadMoreData(List<BeautyPhotoInfo> data) {
+        mAdapter.loadMoreComplete();
+        mAdapter.addData(data);
+
+    }
+
+    /**
+     * 加载失败
+     */
+    public void loadMoreFail() {
+        mAdapter.loadMoreFail();
+    }
+
+    /**
+     * 暂无更多数据
+     */
+    public void loadMoreEnd() {
+        mAdapter.loadMoreEnd();
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        // 进入大图页面
+        ToastUtils.showToast("item:" + position);
+
 
     }
 }
