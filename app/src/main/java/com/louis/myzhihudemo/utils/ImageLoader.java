@@ -2,8 +2,10 @@ package com.louis.myzhihudemo.utils;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
@@ -14,6 +16,21 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class ImageLoader {
+    /**
+     * 带监听处理
+     *
+     * @param context
+     * @param url
+     * @param view
+     * @param listener
+     */
+    public static void loadFitCenter(Context context, String url, ImageView view, RequestListener listener) {
+        Glide.with(context).load(url).fitCenter().dontAnimate().listener(listener).into(view);
+    }
+
+    public static void loadCenterCrop(Context context, String url, ImageView view, RequestListener listener) {
+        Glide.with(context).load(url).centerCrop().dontAnimate().listener(listener).into(view);
+    }
 
     /**
      * 计算图片分辨率

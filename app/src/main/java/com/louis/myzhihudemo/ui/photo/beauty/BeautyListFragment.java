@@ -11,9 +11,11 @@ import com.louis.myzhihudemo.injector.components.DaggerBeautyListComponent;
 import com.louis.myzhihudemo.injector.modules.BeautyListModule;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.photo.bigphoto.BigPhotoActivity;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
 import com.louis.myzhihudemo.utils.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -100,7 +102,7 @@ public class BeautyListFragment extends BaseFragment<BeautyListPresent> implemen
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         // 进入大图页面
         ToastUtils.showToast("item:" + position);
-
+        BigPhotoActivity.launch(mContext, (ArrayList<BeautyPhotoInfo>) adapter.getData(), position);
 
     }
 }

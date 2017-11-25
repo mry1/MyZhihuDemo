@@ -1,5 +1,8 @@
 package com.louis.myzhihudemo.local.table;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
@@ -8,7 +11,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * Created by louis on 17-11-23.
  */
 @Entity
-public class BeautyPhotoInfo {
+public class BeautyPhotoInfo implements Parcelable {
     @Id
     private String id;
     private String createdAt;
@@ -21,11 +24,17 @@ public class BeautyPhotoInfo {
     private String who;
     // 保存图片宽高
     private String pixel;
+    // 喜欢
+    private boolean isLove;
+    // 点赞
+    private boolean isPraise;
+    // 下载
+    private boolean isDownload;
 
-    @Generated(hash = 512096145)
-    public BeautyPhotoInfo(String id, String createdAt, String desc,
-                           String publishedAt, String source, String type, String url,
-                           boolean used, String who, String pixel) {
+    @Generated(hash = 2131726483)
+    public BeautyPhotoInfo(String id, String createdAt, String desc, String publishedAt,
+                           String source, String type, String url, boolean used, String who, String pixel,
+                           boolean isLove, boolean isPraise, boolean isDownload) {
         this.id = id;
         this.createdAt = createdAt;
         this.desc = desc;
@@ -36,11 +45,58 @@ public class BeautyPhotoInfo {
         this.used = used;
         this.who = who;
         this.pixel = pixel;
+        this.isLove = isLove;
+        this.isPraise = isPraise;
+        this.isDownload = isDownload;
     }
 
     @Generated(hash = 827125854)
     public BeautyPhotoInfo() {
     }
+
+    protected BeautyPhotoInfo(Parcel in) {
+        id = in.readString();
+        createdAt = in.readString();
+        desc = in.readString();
+        publishedAt = in.readString();
+        source = in.readString();
+        type = in.readString();
+        url = in.readString();
+        used = in.readByte() != 0;
+        who = in.readString();
+        pixel = in.readString();
+        isLove = in.readByte() != 0;
+        isPraise = in.readByte() != 0;
+        isDownload = in.readByte() != 0;
+
+    }
+
+    public static final Creator<BeautyPhotoInfo> CREATOR = new Creator<BeautyPhotoInfo>() {
+        @Override
+        public BeautyPhotoInfo createFromParcel(Parcel in) {
+//            BeautyPhotoInfo bean = new BeautyPhotoInfo();
+//            bean.id = in.readString();
+//            bean.createdAt = in.readString();
+//            bean.desc = in.readString();
+//            bean.publishedAt = in.readString();
+//            bean.source = in.readString();
+//            bean.type = in.readString();
+//            bean.url = in.readString();
+//            bean.used = in.readByte() == 1 ? true : false;
+//            bean.who = in.readString();
+//            bean.pixel = in.readString();
+//            bean.isLove = in.readByte() == 1 ? true : false;
+//            bean.isPraise = in.readByte() == 1 ? true : false;
+//            bean.isDownload = in.readByte() == 1 ? true : false;
+
+            return new BeautyPhotoInfo(in);
+        }
+
+        @Override
+        public BeautyPhotoInfo[] newArray(int size) {
+            return new BeautyPhotoInfo[size];
+        }
+    };
 
     public String getId() {
         return this.id;
@@ -137,4 +193,63 @@ public class BeautyPhotoInfo {
                 ", pixel='" + pixel + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(createdAt);
+        parcel.writeString(desc);
+        parcel.writeString(publishedAt);
+        parcel.writeString(source);
+        parcel.writeString(type);
+        parcel.writeString(url);
+        parcel.writeByte((byte) (used ? 1 : 0));
+        parcel.writeString(who);
+        parcel.writeString(pixel);
+        parcel.writeByte((byte) (isLove ? 1 : 0));
+        parcel.writeByte((byte) (isPraise ? 1 : 0));
+        parcel.writeByte((byte) (isDownload ? 1 : 0));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BeautyPhotoInfo)) {
+            return false;
+        }
+        BeautyPhotoInfo other = (BeautyPhotoInfo) o;
+        if (url.equals(other.getUrl())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getIsLove() {
+        return this.isLove;
+    }
+
+    public void setIsLove(boolean isLove) {
+        this.isLove = isLove;
+    }
+
+    public boolean getIsPraise() {
+        return this.isPraise;
+    }
+
+    public void setIsPraise(boolean isPraise) {
+        this.isPraise = isPraise;
+    }
+
+    public boolean getIsDownload() {
+        return this.isDownload;
+    }
+
+    public void setIsDownload(boolean isDownload) {
+        this.isDownload = isDownload;
+    }
+
 }
