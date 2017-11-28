@@ -6,10 +6,12 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
@@ -26,6 +28,7 @@ import java.util.List;
 public class PhotoPagerAdapter extends PagerAdapter {
     private Context mContext;
     private List<BeautyPhotoInfo> mImgList;
+    private OnTapListener mTapListener;
 
     public PhotoPagerAdapter(Context context) {
         this.mContext = context;
@@ -34,13 +37,13 @@ public class PhotoPagerAdapter extends PagerAdapter {
 
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_photo_view, null, false);
         final PhotoView photo = (PhotoView) view.findViewById(R.id.iv_photo);
         final SpinKitView loadingView = (SpinKitView) view.findViewById(R.id.loading_view);
         final TextView tvReload = (TextView) view.findViewById(R.id.tv_reload);
 
-        RequestListener listener = new RequestListener() {
+        final RequestListener listener = new RequestListener() {
             @Override
             public boolean onException(Exception e, Object model, Target target, boolean isFirstResource) {
                 loadingView.setVisibility(View.GONE);
@@ -57,8 +60,24 @@ public class PhotoPagerAdapter extends PagerAdapter {
             }
         };
         ImageLoader.loadCenterCrop(mContext, mImgList.get(position).getUrl(), photo, listener);
+        photo.setOnPhotoTapListener(new OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(ImageView imageView, float v, float v1) {
+                if (mTapListener != null) {
+                    mTapListener.onPhotoClick();
+                }
+            }
+        });
 
+        tvReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvReload.setVisibility(View.GONE);
+                loadingView.setVisibility(View.VISIBLE);
+                ImageLoader.loadCenterCrop(mContext, mImgList.get(position % mImgList.size()).getUrl(), photo, listener);
 
+            }
+        });
         container.addView(view);
         return view;
     }
@@ -82,4 +101,13 @@ public class PhotoPagerAdapter extends PagerAdapter {
         this.mImgList = imgList;
         notifyDataSetChanged();
     }
+
+    public void setTapListener(OnTapListener listener) {
+        mTapListener = listener;
+    }
+
+    public interface OnTapListener {
+        void onPhotoClick();
+    }
+
 }

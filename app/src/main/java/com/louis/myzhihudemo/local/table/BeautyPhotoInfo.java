@@ -74,20 +74,6 @@ public class BeautyPhotoInfo implements Parcelable {
     public static final Creator<BeautyPhotoInfo> CREATOR = new Creator<BeautyPhotoInfo>() {
         @Override
         public BeautyPhotoInfo createFromParcel(Parcel in) {
-//            BeautyPhotoInfo bean = new BeautyPhotoInfo();
-//            bean.id = in.readString();
-//            bean.createdAt = in.readString();
-//            bean.desc = in.readString();
-//            bean.publishedAt = in.readString();
-//            bean.source = in.readString();
-//            bean.type = in.readString();
-//            bean.url = in.readString();
-//            bean.used = in.readByte() == 1 ? true : false;
-//            bean.who = in.readString();
-//            bean.pixel = in.readString();
-//            bean.isLove = in.readByte() == 1 ? true : false;
-//            bean.isPraise = in.readByte() == 1 ? true : false;
-//            bean.isDownload = in.readByte() == 1 ? true : false;
 
             return new BeautyPhotoInfo(in);
         }

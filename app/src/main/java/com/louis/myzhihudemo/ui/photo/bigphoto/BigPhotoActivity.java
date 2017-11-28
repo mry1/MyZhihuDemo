@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -54,6 +56,11 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
     private static final String PHOTO_INDEX_KEY = "PhotoIndexKey";
     private ArrayList<BeautyPhotoInfo> mPhotoList;
     private int mIndex;
+    private boolean mIsInteract = false;
+    /**
+     * 是否隐藏Toolbar
+     */
+    private boolean mIsHideToolbar = false;
 
     public static void launch(Context context, ArrayList<BeautyPhotoInfo> datas, int index) {
         Intent intent = new Intent(context, BigPhotoActivity.class);
@@ -91,7 +98,72 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
             mLlLayout.setPadding(0, 0, 0, NavUtils.getNavigationBarHeight(this));
         }
         mVpPhoto.setAdapter(mAdapter);
+        // 设置是否和viewpager联动、动画
+        mDragLayout.interactWithViewPager(mIsInteract);
+        mDragLayout.setAnimatorMode(DragSlopLayout.MODE_DRAG_OUTSIDE);
+        mAdapter.setTapListener(new PhotoPagerAdapter.OnTapListener() {
+            @Override
+            public void onPhotoClick() {
+                mIsHideToolbar = !mIsHideToolbar;
+                if (mIsHideToolbar) {
+                    mDragLayout.startOutAnim();
+                    mToolbar.animate().translationY(-mToolbar.getBottom()).setDuration(300);
 
+                } else {
+                    mDragLayout.startInAnim();
+                    mToolbar.animate().translationY(0).setDuration(300);
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_animate, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        item.setChecked(true);
+        switch (item.getItemId()) {
+            case R.id.slide_bottom:
+                mDragLayout.setAnimatorMode(DragSlopLayout.SLIDE_BOTTOM);
+                return true;
+            case R.id.slide_left:
+                mDragLayout.setAnimatorMode(DragSlopLayout.SLIDE_LEFT);
+                return true;
+            case R.id.slide_right:
+                mDragLayout.setAnimatorMode(DragSlopLayout.SLIDE_RIGHT);
+                return true;
+            case R.id.slide_fade:
+                mDragLayout.setAnimatorMode(DragSlopLayout.FADE);
+                return true;
+            case R.id.slide_flip_x:
+                mDragLayout.setAnimatorMode(DragSlopLayout.FLIP_X);
+                return true;
+            case R.id.slide_flip_y:
+                mDragLayout.setAnimatorMode(DragSlopLayout.FLIP_Y);
+                return true;
+            case R.id.slide_zoom:
+                mDragLayout.setAnimatorMode(DragSlopLayout.ZOOM);
+                return true;
+            case R.id.slide_zoom_left:
+                mDragLayout.setAnimatorMode(DragSlopLayout.ZOOM_LEFT);
+                return true;
+            case R.id.slide_zoom_right:
+                mDragLayout.setAnimatorMode(DragSlopLayout.ZOOM_RIGHT);
+                return true;
+
+            case R.id.item_interact:
+                mIsInteract = !mIsInteract;
+                item.setChecked(mIsInteract);
+                mDragLayout.interactWithViewPager(mIsInteract);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -107,5 +179,13 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
 
     public void loadData(List<BeautyPhotoInfo> beautyPhotoDatas) {
         mAdapter.updateData(beautyPhotoDatas);
+        mVpPhoto.setCurrentItem(mIndex);
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.hold, R.anim.zoom_out_exit);
     }
 }

@@ -28,5 +28,5 @@
         android:gravity="center_horizontal"
         android:text="重新加载"
         android:textColor="@drawable/sel_text_reload"
-        />
+        android:visibility="gone" />
 </FrameLayout>
