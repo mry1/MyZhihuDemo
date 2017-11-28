@@ -8,6 +8,7 @@
         android:id="@+id/toolbar"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:background="#10000000"
         android:layout_height="@dimen/toolbar_height"
         android:layout_marginTop="@dimen/toolbar_margin_top"
         app:theme="@style/AppTheme.AppBarOverlay"/>

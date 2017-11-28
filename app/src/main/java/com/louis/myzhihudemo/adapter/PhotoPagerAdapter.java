@@ -102,6 +102,55 @@ public class PhotoPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
+    public BeautyPhotoInfo getData(int position) {
+        return mImgList.get(position);
+    }
+
+    /**
+     * 通过url获取对应bean
+     *
+     * @param url
+     * @return
+     */
+    public BeautyPhotoInfo getData(String url) {
+        for (BeautyPhotoInfo data : mImgList) {
+            if (url.equals(data.getUrl())) {
+                return data;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 是否收藏
+     *
+     * @param position
+     * @return
+     */
+    public boolean isLoved(int position) {
+        return mImgList.get(position).getIsLove();
+    }
+
+    /**
+     * 是否点赞
+     *
+     * @param position
+     * @return
+     */
+    public boolean isPraise(int position) {
+        return mImgList.get(position).getIsPraise();
+    }
+
+    /**
+     * 是否下载
+     *
+     * @param position
+     * @return
+     */
+    public boolean isDownload(int position) {
+        return mImgList.get(position).getIsDownload();
+    }
+
     public void setTapListener(OnTapListener listener) {
         mTapListener = listener;
     }

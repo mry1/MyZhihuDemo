@@ -86,4 +86,8 @@ dependencies {
     compile 'com.github.Rukey7:DragSlopLayout:1.0.3'
 
     compile 'com.github.ybq:Android-SpinKit:1.0.1'
+    // RxPermissinos
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    // RxBinding
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 }

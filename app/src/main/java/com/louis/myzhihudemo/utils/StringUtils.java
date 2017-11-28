@@ -36,4 +36,11 @@ public class StringUtils {
         return height;
     }
 
+    public static boolean isBlank(String str) {
+        return (str == null || str.trim().length() == 0);
+    }
+
+    public static boolean isEmpty(CharSequence str) {
+        return (str == null || str.length() == 0);
+    }
 }

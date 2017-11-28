@@ -1,5 +1,6 @@
 package com.louis.myzhihudemo.ui.photo.bigphoto;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,13 +14,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dl7.drag.DragSlopLayout;
+import com.jakewharton.rxbinding.view.RxView;
 import com.louis.myzhihudemo.adapter.PhotoPagerAdapter;
 import com.louis.myzhihudemo.base.BaseActivity;
 import com.louis.myzhihudemo.injector.components.DaggerBigPhotoComponent;
 import com.louis.myzhihudemo.injector.modules.BigPhotoModule;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.utils.DownloadUtils;
 import com.louis.myzhihudemo.utils.NavUtils;
+import com.louis.myzhihudemo.utils.ToastUtils;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import rx.functions.Action1;
 
 /**
  * Created by louis on 17-11-24.
@@ -61,6 +67,11 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
      * 是否隐藏Toolbar
      */
     private boolean mIsHideToolbar = false;
+    private RxPermissions mRxPermissions;
+    /**
+     * adapter当前位置
+     */
+    private int mCurPosition;
 
     public static void launch(Context context, ArrayList<BeautyPhotoInfo> datas, int index) {
         Intent intent = new Intent(context, BigPhotoActivity.class);
@@ -116,6 +127,49 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
 
             }
         });
+
+        mVpPhoto.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mCurPosition = position;
+                // 设置图标状态
+                mIvFavorite.setSelected(mAdapter.isLoved(position));
+                mIvDownload.setSelected(mAdapter.isDownload(position));
+                mIvPraise.setSelected(mAdapter.isPraise(position));
+            }
+        });
+
+        mRxPermissions = new RxPermissions(this);
+        RxView.clicks(mIvDownload)
+                .compose(mRxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean granted) {
+                        if (granted) {
+                            //  分配了权限，开始下载图片
+                            DownloadUtils.downloadOrDeletePhoto(BigPhotoActivity.this, mAdapter.getData(mCurPosition).getUrl(),
+                                    mAdapter.getData(mCurPosition).getId(), new DownloadUtils.OnCompletedListener() {
+                                        @Override
+                                        public void onCompleted(String url) {
+                                            mAdapter.getData(url).setIsDownload(true);
+                                            mIvDownload.setSelected(true);
+
+                                        }
+
+                                        @Override
+                                        public void onDeleted(String url) {
+                                            mAdapter.getData(url).setIsDownload(false);
+                                            mIvDownload.setSelected(false);
+                                        }
+                                    });
+
+
+                        } else {
+                            ToastUtils.showSnackBar(BigPhotoActivity.this, "授权失败", false);
+                        }
+                    }
+                });
+
 
     }
 
