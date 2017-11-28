@@ -77,7 +77,7 @@ public class DownloadUtils {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override
                     public void call(Boolean isCompleted) {
@@ -95,14 +95,6 @@ public class DownloadUtils {
                         sDoDlPhotos.put(url.hashCode(), false);
 
                     }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        ToastUtils.showSnackBar(activity, "下载失败", false);
-                        sDlPhotos.put(url.hashCode(), false);
-                        sDoDlPhotos.put(url.hashCode(), false);
-
-                    }
                 });
 
 
@@ -117,6 +109,7 @@ public class DownloadUtils {
         void onCompleted(String url);
 
         void onDeleted(String url);
+
     }
 
 }

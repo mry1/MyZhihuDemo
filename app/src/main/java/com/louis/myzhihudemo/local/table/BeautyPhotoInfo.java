@@ -12,13 +12,13 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class BeautyPhotoInfo implements Parcelable {
-    @Id
     private String id;
     private String createdAt;
     private String desc;
     private String publishedAt;
     private String source;
     private String type;
+    @Id
     private String url;
     private boolean used;
     private String who;

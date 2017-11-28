@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.louis.myzhihudemo.injector.modules.BigPhotoModule;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.utils.DownloadUtils;
+import com.louis.myzhihudemo.utils.GlobalConst;
 import com.louis.myzhihudemo.utils.NavUtils;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -133,8 +135,13 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
             public void onPageSelected(int position) {
                 mCurPosition = position;
                 // 设置图标状态
+//                boolean download = mAdapter.isDownload(position);
+//                mIvDownload.setSelected(download);
                 mIvFavorite.setSelected(mAdapter.isLoved(position));
-                mIvDownload.setSelected(mAdapter.isDownload(position));
+
+                BeautyPhotoInfo data = mAdapter.getData(position);
+                mIvDownload.setSelected(data.getIsDownload());
+
                 mIvPraise.setSelected(mAdapter.isPraise(position));
             }
         });
@@ -151,16 +158,22 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
                                     mAdapter.getData(mCurPosition).getId(), new DownloadUtils.OnCompletedListener() {
                                         @Override
                                         public void onCompleted(String url) {
-                                            mAdapter.getData(url).setIsDownload(true);
+                                            BeautyPhotoInfo data = mAdapter.getData(url);
+                                            Log.d(GlobalConst.BIG_PHOTO_TAG, "data::" + data.toString());
+                                            data.setIsDownload(true);
                                             mIvDownload.setSelected(true);
+                                            mPresenter.insert(data);
 
                                         }
 
                                         @Override
                                         public void onDeleted(String url) {
-                                            mAdapter.getData(url).setIsDownload(false);
+                                            BeautyPhotoInfo data = mAdapter.getData(url);
+                                            data.setIsDownload(false);
                                             mIvDownload.setSelected(false);
+                                            mPresenter.delete(data);
                                         }
+
                                     });
 
 
@@ -234,6 +247,12 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
     public void loadData(List<BeautyPhotoInfo> beautyPhotoDatas) {
         mAdapter.updateData(beautyPhotoDatas);
         mVpPhoto.setCurrentItem(mIndex);
+        if (mIndex == 0) {
+            //  为0不会回调addOnPageSelectedListener，所以这里要处理下
+            mIvFavorite.setSelected(mAdapter.isLoved(0));
+            mIvDownload.setSelected(mAdapter.isDownload(0));
+            mIvPraise.setSelected(mAdapter.isPraise(0));
+        }
 
     }
 

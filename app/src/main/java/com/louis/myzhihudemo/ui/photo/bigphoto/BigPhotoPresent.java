@@ -86,4 +86,23 @@ public class BigPhotoPresent extends BasePresenter {
                     .toList();
         }
     };
+
+    public void insert(BeautyPhotoInfo data) {
+        if (mDbLovedData.contains(data)) {
+            mDbDao.update(data);
+        } else {
+            mDbDao.insert(data);
+            mDbLovedData.add(data);
+        }
+    }
+
+    public void delete(BeautyPhotoInfo data) {
+        if (!data.getIsLove() && !data.getIsDownload() && !data.getIsPraise()) {
+            mDbLovedData.remove(data);
+            mDbDao.delete(data);
+        } else {
+            mDbDao.update(data);
+        }
+
+    }
 }

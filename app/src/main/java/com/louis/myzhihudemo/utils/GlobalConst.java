@@ -14,4 +14,7 @@ public class GlobalConst {
      */
     public static final String DEFAULT_SAVE_PATH = "/storage/emulated/0/MyZhihuDemo";
 
+    public static final String BIG_PHOTO_TAG = "big_photo_tag";
+
+
 }
