@@ -95,6 +95,14 @@ public class DownloadUtils {
                         sDoDlPhotos.put(url.hashCode(), false);
 
                     }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtils.showSnackBar(activity, "下载异常", false);
+                        sDlPhotos.put(url.hashCode(), false);
+                        sDoDlPhotos.put(url.hashCode(), false);
+
+                    }
                 });
 
 

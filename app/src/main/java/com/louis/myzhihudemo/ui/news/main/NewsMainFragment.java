@@ -87,7 +87,6 @@ public class NewsMainFragment extends BaseFragment<NewsMainPresent> implements I
             }
         });
 
-        // TODO: 2017/5/24 查看MVPAPP实现该功能的方法
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,8 +1,12 @@
 package com.louis.myzhihudemo.ui.photo.bigphoto;
 
+import android.util.Log;
+
+import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfoDao;
+import com.louis.myzhihudemo.utils.GlobalConst;
 
 import java.util.List;
 
@@ -20,6 +24,7 @@ public class BigPhotoPresent extends BasePresenter {
     List<BeautyPhotoInfo> mDatas;
     private final BeautyPhotoInfoDao mDbDao;
     private List<BeautyPhotoInfo> mDbLovedData;
+    private int mPage = 2;
 
     public BigPhotoPresent(BigPhotoActivity view, List<BeautyPhotoInfo> datas, BeautyPhotoInfoDao dao) {
         this.mView = view;
@@ -61,6 +66,27 @@ public class BigPhotoPresent extends BasePresenter {
 
     @Override
     public void getMoreData() {
+        RetrofitService.getInstance().getBeautyPhotoList(mPage)
+                .compose(mTransformer)
+                .subscribe(new Subscriber<List<BeautyPhotoInfo>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(GlobalConst.TAG_BIG_PHOTO, e.toString());
+
+                    }
+
+                    @Override
+                    public void onNext(List<BeautyPhotoInfo> beautyPhotoInfos) {
+                        mView.loadMoreData(beautyPhotoInfos);
+                        mPage++;
+                    }
+                });
+
 
     }
 

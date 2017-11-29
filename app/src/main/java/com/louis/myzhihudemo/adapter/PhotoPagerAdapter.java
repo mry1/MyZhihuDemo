@@ -29,6 +29,10 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private Context mContext;
     private List<BeautyPhotoInfo> mImgList;
     private OnTapListener mTapListener;
+    // 限制 Adapter 在倒数第3个位置时启动加载更多回调
+    private final static int LOAD_MORE_LIMIT = 3;
+    private boolean mIsLoadMore = false;
+    private OnLoadMoreListener mLoadMoreListener;
 
     public PhotoPagerAdapter(Context context) {
         this.mContext = context;
@@ -42,6 +46,15 @@ public class PhotoPagerAdapter extends PagerAdapter {
         final PhotoView photo = (PhotoView) view.findViewById(R.id.iv_photo);
         final SpinKitView loadingView = (SpinKitView) view.findViewById(R.id.loading_view);
         final TextView tvReload = (TextView) view.findViewById(R.id.tv_reload);
+
+        if ((mImgList.size() <= LOAD_MORE_LIMIT + position) && !mIsLoadMore) {
+            if (mLoadMoreListener != null) {
+                mIsLoadMore = true;
+                mLoadMoreListener.onLoadMore();
+            }
+
+        }
+
 
         final RequestListener listener = new RequestListener() {
             @Override
@@ -102,6 +115,12 @@ public class PhotoPagerAdapter extends PagerAdapter {
         notifyDataSetChanged();
     }
 
+    public void addData(List<BeautyPhotoInfo> lists) {
+        mImgList.addAll(lists);
+        notifyDataSetChanged();
+        mIsLoadMore = false;
+    }
+
     public BeautyPhotoInfo getData(int position) {
         return mImgList.get(position);
     }
@@ -151,6 +170,10 @@ public class PhotoPagerAdapter extends PagerAdapter {
         return mImgList.get(position).getIsDownload();
     }
 
+    public void setLoadMoreListener(OnLoadMoreListener listener) {
+        this.mLoadMoreListener = listener;
+    }
+
     public void setTapListener(OnTapListener listener) {
         mTapListener = listener;
     }
@@ -159,4 +182,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         void onPhotoClick();
     }
 
+    public interface OnLoadMoreListener {
+        void onLoadMore();
+    }
 }

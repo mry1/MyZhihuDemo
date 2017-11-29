@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -22,6 +23,7 @@ import com.louis.myzhihudemo.injector.components.DaggerBigPhotoComponent;
 import com.louis.myzhihudemo.injector.modules.BigPhotoModule;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.utils.AnimateHelper;
 import com.louis.myzhihudemo.utils.DownloadUtils;
 import com.louis.myzhihudemo.utils.GlobalConst;
 import com.louis.myzhihudemo.utils.NavUtils;
@@ -34,6 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.functions.Action1;
 
 /**
@@ -146,6 +149,14 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
             }
         });
 
+        mAdapter.setLoadMoreListener(new PhotoPagerAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mPresenter.getMoreData();
+
+            }
+        });
+
         mRxPermissions = new RxPermissions(this);
         RxView.clicks(mIvDownload)
                 .compose(mRxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
@@ -159,7 +170,7 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
                                         @Override
                                         public void onCompleted(String url) {
                                             BeautyPhotoInfo data = mAdapter.getData(url);
-                                            Log.d(GlobalConst.BIG_PHOTO_TAG, "data::" + data.toString());
+                                            Log.d(GlobalConst.TAG_BIG_PHOTO, "data::" + data.toString());
                                             data.setIsDownload(true);
                                             mIvDownload.setSelected(true);
                                             mPresenter.insert(data);
@@ -233,6 +244,38 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
         return super.onOptionsItemSelected(item);
     }
 
+    @OnClick({R.id.iv_favorite, R.id.iv_praise, R.id.iv_share})
+    public void onClick(View view) {
+        boolean selected = !view.isSelected();
+        BeautyPhotoInfo data = mAdapter.getData(mCurPosition);
+        switch (view.getId()) {
+            case R.id.iv_favorite:
+                data.setIsLove(selected);
+                break;
+            case R.id.iv_praise:
+                data.setIsPraise(selected);
+                break;
+            case R.id.iv_share:
+                ToastUtils.showToast("还没加这个功能");
+
+                break;
+        }
+
+        // 除分享外都做动画和数据库处理
+        if (view.getId() != R.id.iv_share) {
+            view.setSelected(selected);
+            AnimateHelper.doHeartBeat(view, 500);
+
+            if (selected) {
+                mPresenter.insert(data);
+            } else {
+                mPresenter.delete(data);
+            }
+
+        }
+
+    }
+
     @Override
     protected void initData() {
 
@@ -255,6 +298,13 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
         }
 
     }
+
+    public void loadMoreData(List<BeautyPhotoInfo> beautyPhotoInfos) {
+        mAdapter.addData(beautyPhotoInfos);
+        mAdapter.startUpdate(mVpPhoto);
+
+    }
+
 
     @Override
     public void finish() {
