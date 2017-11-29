@@ -28,6 +28,7 @@ import com.louis.myzhihudemo.utils.DownloadUtils;
 import com.louis.myzhihudemo.utils.GlobalConst;
 import com.louis.myzhihudemo.utils.NavUtils;
 import com.louis.myzhihudemo.utils.ToastUtils;
+import com.louis.myzhihudemo.widget.PhotoViewPager;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ import rx.functions.Action1;
 
 public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
     @BindView(R.id.vp_photo)
-    ViewPager mVpPhoto;
+    PhotoViewPager mVpPhoto;
     @BindView(R.id.iv_favorite)
     ImageView mIvFavorite;
     @BindView(R.id.iv_download)
@@ -109,6 +110,12 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
     @Override
     protected void initView() {
         initToolbar(mToolbar, true, "");
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BigPhotoActivity.this.finish();
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 空出底部导航的高度，因为 NavigationBar 是透明的
             mLlLayout.setPadding(0, 0, 0, NavUtils.getNavigationBarHeight(this));
@@ -256,6 +263,7 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
                 data.setIsPraise(selected);
                 break;
             case R.id.iv_share:
+                // TODO: 17-11-29 美图模块分享功能
                 ToastUtils.showToast("还没加这个功能");
 
                 break;
