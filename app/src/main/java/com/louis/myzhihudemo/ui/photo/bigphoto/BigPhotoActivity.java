@@ -145,12 +145,9 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
             public void onPageSelected(int position) {
                 mCurPosition = position;
                 // 设置图标状态
-//                boolean download = mAdapter.isDownload(position);
-//                mIvDownload.setSelected(download);
-                mIvFavorite.setSelected(mAdapter.isLoved(position));
-
                 BeautyPhotoInfo data = mAdapter.getData(position);
-                mIvDownload.setSelected(data.getIsDownload());
+                mIvFavorite.setSelected(mAdapter.isLoved(position));
+                mIvDownload.setSelected(mAdapter.isDownload(position));
 
                 mIvPraise.setSelected(mAdapter.isPraise(position));
             }

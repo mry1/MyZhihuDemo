@@ -21,6 +21,7 @@
         <activity
             android:name=".photo.bigphoto.BigPhotoActivity"
             android:theme="@style/AppTheme.BigPhotoTheme" />
+        <activity android:name=".manage.love.LoveActivity" />
     </application>
 
 </manifest>
