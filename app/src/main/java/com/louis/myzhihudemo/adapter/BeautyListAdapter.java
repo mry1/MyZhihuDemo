@@ -2,7 +2,6 @@ package com.louis.myzhihudemo.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -23,13 +22,13 @@ import java.util.List;
 public class BeautyListAdapter extends BaseQuickAdapter<BeautyPhotoInfo, BaseViewHolder> {
 
     private Context mContext;
-    private List<BeautyPhotoInfo> data;
+    private List<BeautyPhotoInfo> mDatas;
     private final int mPhotoWidth;
 
     public BeautyListAdapter(Context context, @Nullable List<BeautyPhotoInfo> data) {
         super(R.layout.item_beauty_photos, data);
         this.mContext = context;
-        this.data = data;
+        this.mDatas = data;
         int widthPixels = context.getResources().getDisplayMetrics().widthPixels;
         int marginPixels = context.getResources().getDimensionPixelOffset(R.dimen.photo_margin_width);
         mPhotoWidth = widthPixels / 2 - marginPixels;
@@ -47,6 +46,19 @@ public class BeautyListAdapter extends BaseQuickAdapter<BeautyPhotoInfo, BaseVie
         layoutParams.height = photoHeight;
         Picasso.with(mContext).load(item.getUrl()).placeholder(DefIconFactory.provideIcon()).into(ivPhoto);
         helper.setText(R.id.tv_title, item.getCreatedAt());
+
+    }
+
+    /**
+     * 删除一条item
+     *
+     * @param position
+     */
+    public void removeItem(int position) {
+        if (position > mData.size() - 1)
+            return;
+        mData.remove(position);
+        notifyItemRemoved(position);
 
     }
 

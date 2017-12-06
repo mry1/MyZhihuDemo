@@ -16,5 +16,8 @@ public class GlobalConst {
 
     public static final String TAG_BIG_PHOTO = "big_photo_tag";
 
+    public static final String RESULT_KEY = "result_key";
+
+    public static final int REQUEST_CODE = 110;
 
 }

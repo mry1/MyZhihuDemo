@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +25,8 @@ import com.louis.myzhihudemo.injector.components.DaggerBigPhotoComponent;
 import com.louis.myzhihudemo.injector.modules.BigPhotoModule;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.home.HomeActivity;
+import com.louis.myzhihudemo.ui.manage.photo.LovePhotoFragment;
 import com.louis.myzhihudemo.utils.AnimateHelper;
 import com.louis.myzhihudemo.utils.DownloadUtils;
 import com.louis.myzhihudemo.utils.GlobalConst;
@@ -31,7 +35,10 @@ import com.louis.myzhihudemo.utils.ToastUtils;
 import com.louis.myzhihudemo.widget.PhotoViewPager;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,6 +76,15 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
     private ArrayList<BeautyPhotoInfo> mPhotoList;
     private int mIndex;
     private boolean mIsInteract = false;
+    public static final int LAUNCH_TAG_FROM_LIST = 1;
+    public static final int LAUNCH_TAG_FROM_LOVE = 2;
+    private static int mTag = 0;
+
+    /**
+     * 保存被删除的收藏项
+     */
+    private boolean[] mIsDelLove;
+
     /**
      * 是否隐藏Toolbar
      */
@@ -79,7 +95,13 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
      */
     private int mCurPosition;
 
-    public static void launch(Context context, ArrayList<BeautyPhotoInfo> datas, int index) {
+    @IntDef({LAUNCH_TAG_FROM_LIST, LAUNCH_TAG_FROM_LOVE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LaunchTag {
+    }
+
+    public static void launch(@LaunchTag int tag, Context context, ArrayList<BeautyPhotoInfo> datas, int index) {
+        mTag = tag;
         Intent intent = new Intent(context, BigPhotoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(BIG_PHOTO_KEY, datas);
@@ -87,6 +109,18 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
         intent.putExtra(PHOTO_INDEX_KEY, index);
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.expand_vertical_entry, R.anim.hold);
+
+    }
+
+    public static void launchForResult(@LaunchTag int tag, Fragment fragment, ArrayList<BeautyPhotoInfo> datas, int index) {
+        mTag = tag;
+        Intent intent = new Intent(fragment.getContext(), BigPhotoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(BIG_PHOTO_KEY, datas);
+        intent.putExtras(bundle);
+        intent.putExtra(PHOTO_INDEX_KEY, index);
+        fragment.startActivityForResult(intent, GlobalConst.REQUEST_CODE);
+        fragment.getActivity().overridePendingTransition(R.anim.expand_vertical_entry, R.anim.hold);
 
     }
 
@@ -104,7 +138,6 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
                 .bigPhotoModule(new BigPhotoModule(this, mPhotoList))
                 .build()
                 .inject(this);
-
     }
 
     @Override
@@ -153,14 +186,17 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
             }
         });
 
-        mAdapter.setLoadMoreListener(new PhotoPagerAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mPresenter.getMoreData();
+        if (mTag == LAUNCH_TAG_FROM_LIST) { // 收藏界面不需要加载更多
+            mAdapter.setLoadMoreListener(new PhotoPagerAdapter.OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    mPresenter.getMoreData();
 
-            }
-        });
-
+                }
+            });
+        } else {
+            mIsDelLove = new boolean[mPhotoList.size()];
+        }
         mRxPermissions = new RxPermissions(this);
         RxView.clicks(mIvDownload)
                 .compose(mRxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
@@ -255,6 +291,10 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
         switch (view.getId()) {
             case R.id.iv_favorite:
                 data.setIsLove(selected);
+                if (mTag == LAUNCH_TAG_FROM_LOVE) {
+                    mIsDelLove[mCurPosition] = mIvFavorite.isSelected();
+                    System.out.println("=====" + Arrays.toString(mIsDelLove));
+                }
                 break;
             case R.id.iv_praise:
                 data.setIsPraise(selected);
@@ -313,7 +353,13 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
 
     @Override
     public void finish() {
+        if (mTag == LAUNCH_TAG_FROM_LOVE) {
+            Intent intent = new Intent();
+            intent.putExtra(GlobalConst.RESULT_KEY, mIsDelLove);
+            setResult(RESULT_OK, intent);
+        }
         super.finish();
         overridePendingTransition(R.anim.hold, R.anim.zoom_out_exit);
+
     }
 }

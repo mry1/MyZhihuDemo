@@ -5,15 +5,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.IntDef;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
 import com.louis.myzhihudemo.base.BaseActivity;
+import com.louis.myzhihudemo.base.BaseFragment;
+import com.louis.myzhihudemo.base.BaseSwipeBackActivity;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.manage.photo.LovePhotoFragment;
+import com.louis.myzhihudemo.ui.manage.video.LoveVideoFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -21,7 +31,7 @@ import butterknife.BindView;
  * Created by louis on 17-11-29.
  */
 
-public class LoveActivity extends BaseActivity {
+public class LoveActivity extends BaseSwipeBackActivity {
     @BindView(R.id.tool_bar)
     Toolbar mToolbar;
     @BindView(R.id.tab_layout)
@@ -62,12 +72,25 @@ public class LoveActivity extends BaseActivity {
         mIndexKey = getIntent().getIntExtra(INDEX_KEY, 0);
         initToolbar(mToolbar, true, "收藏");
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
 
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoveActivity.this.finish();
+            }
+        });
 
     }
 
     @Override
     protected void initData() {
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new LovePhotoFragment());
+        fragments.add(new LoveVideoFragment());
+        mPagerAdapter.setItems(fragments, Arrays.asList(new String[]{"图片", "视频"}));
+        mViewPager.setCurrentItem(mIndexKey);
 
     }
 

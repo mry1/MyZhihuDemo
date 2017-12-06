@@ -102,7 +102,7 @@ public class BeautyListFragment extends BaseFragment<BeautyListPresent> implemen
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         // 进入大图页面
         ToastUtils.showToast("item:" + position);
-        BigPhotoActivity.launch(mContext, (ArrayList<BeautyPhotoInfo>) adapter.getData(), position);
+        BigPhotoActivity.launch(BigPhotoActivity.LAUNCH_TAG_FROM_LIST, mContext, (ArrayList<BeautyPhotoInfo>) adapter.getData(), position);
 
     }
 }

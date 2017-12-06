@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.ui.news.newslist_home;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,8 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
 
     @Override
     protected void initViews() {
+//        if (mFab == null)
+//            return;
         mFab.setRippleColor(getResources().getColor(R.color.colorPrimary));
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,9 +140,10 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
             mStoryAdapter.setNewData(data.stories);
 
         } else {
-            mStoryAdapter.loadMoreComplete();
             mStoryAdapter.addData(data.stories);
         }
+        mStoryAdapter.loadMoreComplete();
+
     }
 
     @Override

@@ -86,7 +86,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         Log.d(TAG, "setUserVisibleHint...." + isVisibleToUser);
         if (isVisibleToUser && isVisible() && mRootView != null && !mIsMulti) {
             mIsMulti = true;
-//            updateViews(false);
+            updateViews(false);
 
         } else {
             super.setUserVisibleHint(isVisibleToUser);
@@ -148,7 +148,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             SwipeRefreshHelper.init(mSwipeRefresh, new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-//                    updateViews(true);
+                    updateViews(true);
 //                    onRefreshViews();
                 }
             });
