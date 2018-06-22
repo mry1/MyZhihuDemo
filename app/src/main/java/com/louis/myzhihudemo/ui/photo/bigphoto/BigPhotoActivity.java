@@ -25,11 +25,9 @@ import com.louis.myzhihudemo.injector.components.DaggerBigPhotoComponent;
 import com.louis.myzhihudemo.injector.modules.BigPhotoModule;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.ui.R;
-import com.louis.myzhihudemo.ui.home.HomeActivity;
-import com.louis.myzhihudemo.ui.manage.photo.LovePhotoFragment;
 import com.louis.myzhihudemo.utils.AnimateHelper;
 import com.louis.myzhihudemo.utils.DownloadUtils;
-import com.louis.myzhihudemo.utils.GlobalConst;
+import com.louis.myzhihudemo.utils.Constant;
 import com.louis.myzhihudemo.utils.NavUtils;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.louis.myzhihudemo.widget.PhotoViewPager;
@@ -119,7 +117,7 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
         bundle.putParcelableArrayList(BIG_PHOTO_KEY, datas);
         intent.putExtras(bundle);
         intent.putExtra(PHOTO_INDEX_KEY, index);
-        fragment.startActivityForResult(intent, GlobalConst.REQUEST_CODE);
+        fragment.startActivityForResult(intent, Constant.REQUEST_CODE);
         fragment.getActivity().overridePendingTransition(R.anim.expand_vertical_entry, R.anim.hold);
 
     }
@@ -210,7 +208,7 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
                                         @Override
                                         public void onCompleted(String url) {
                                             BeautyPhotoInfo data = mAdapter.getData(url);
-                                            Log.d(GlobalConst.TAG_BIG_PHOTO, "data::" + data.toString());
+                                            Log.d(Constant.TAG_BIG_PHOTO, "data::" + data.toString());
                                             data.setIsDownload(true);
                                             mIvDownload.setSelected(true);
                                             mPresenter.insert(data);
@@ -301,7 +299,7 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
                 break;
             case R.id.iv_share:
                 // TODO: 17-11-29 美图模块分享功能
-                ToastUtils.showToast("还没加这个功能");
+                ToastUtils.showMessage("还没加这个功能");
 
                 break;
         }
@@ -355,7 +353,7 @@ public class BigPhotoActivity extends BaseActivity<BigPhotoPresent> {
     public void finish() {
         if (mTag == LAUNCH_TAG_FROM_LOVE) {
             Intent intent = new Intent();
-            intent.putExtra(GlobalConst.RESULT_KEY, mIsDelLove);
+            intent.putExtra(Constant.RESULT_KEY, mIsDelLove);
             setResult(RESULT_OK, intent);
         }
         super.finish();

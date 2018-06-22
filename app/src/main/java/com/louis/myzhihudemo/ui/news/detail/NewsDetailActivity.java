@@ -324,7 +324,7 @@ public class NewsDetailActivity extends BaseSwipeBackActivity<NewsDetailPresent>
         @android.webkit.JavascriptInterface
         public void onImageClick(String img) {
 //            UIHelper.showBigImage(mContext, img);
-            ToastUtils.showToast(img);
+            ToastUtils.showMessage(img);
         }
     }
 

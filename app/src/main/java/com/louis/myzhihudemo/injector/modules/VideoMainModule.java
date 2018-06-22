@@ -1,5 +1,6 @@
 package com.louis.myzhihudemo.injector.modules;
 
+import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
 import com.louis.myzhihudemo.injector.PerFragment;
 import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.video.main.VideoMainFragment;
@@ -27,6 +28,11 @@ public class VideoMainModule {
     @Provides
     public VideoMainPresent provideVideoMainPresent(DaoSession session) {
         return new VideoMainPresent(mView);
+    }
+
+    @Provides
+    public ViewPagerAdapter provideViewPagerAdapter() {
+        return new ViewPagerAdapter(mView.getFragmentManager());
     }
 
 }

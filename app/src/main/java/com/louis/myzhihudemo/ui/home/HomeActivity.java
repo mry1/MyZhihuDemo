@@ -21,6 +21,7 @@ import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.ui.manage.video.LoveVideoFragment;
 import com.louis.myzhihudemo.ui.news.main.NewsMainFragment;
 import com.louis.myzhihudemo.ui.photo.main.PhotoMainFragment;
+import com.louis.myzhihudemo.ui.video.main.VideoMainFragment;
 
 import butterknife.BindView;
 
@@ -51,7 +52,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
                     break;
                 case R.id.nav_videos:
-                    replaceFragment(R.id.fl_container, new LoveVideoFragment(), mSparseTags.get(R.id.nav_videos));
+                    replaceFragment(R.id.fl_container, new VideoMainFragment(), mSparseTags.get(R.id.nav_videos));
 
                     break;
                 case R.id.nav_settings:

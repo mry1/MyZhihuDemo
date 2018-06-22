@@ -1,7 +1,6 @@
 package com.louis.myzhihudemo.ui.news.newslist_home;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,7 +162,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresent> implements I
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         List<HomeStory.HomeStories> data = adapter.getData();
-        ToastUtils.showToast("点击了新闻：" + data.get(position).id);
+        ToastUtils.showMessage("点击了新闻：" + data.get(position).id);
         NewsDetailActivity.launch(mContext, data.get(position).id);
 
     }

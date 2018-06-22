@@ -1,13 +1,11 @@
 package com.louis.myzhihudemo.ui.news.newslist_home;
 
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.utils.ToastUtils;
-import com.orhanobut.logger.Logger;
 
 import java.util.Calendar;
 
@@ -59,7 +57,7 @@ public class HomePagePresent extends BasePresenter {
                     public void onError(Throwable e) {
                         if (isRefresh) {
                             mView.finishRefresh();
-                            ToastUtils.showToast("刷新失败");
+                            ToastUtils.showMessage("刷新失败");
                         } else {
                             mView.showNetError();
                         }
@@ -93,7 +91,7 @@ public class HomePagePresent extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showToast("加载失败，" + e.getMessage());
+                        ToastUtils.showMessage("加载失败，" + e.getMessage());
 
                     }
 
@@ -123,7 +121,7 @@ public class HomePagePresent extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showToast("加载失败，" + e.getMessage());
+                        ToastUtils.showMessage("加载失败，" + e.getMessage());
 
                     }
 

@@ -8,6 +8,13 @@ import java.util.List;
 
 public class ThemeInfo {
 
+    public ThemeInfo (){
+
+    }
+    public ThemeInfo(int i){
+        System.out.println("ThemeInfo" + i);
+    }
+
     public int limit;
     public List<ThemeBean> others;
     public List<ThemeBean> subscribed;

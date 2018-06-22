@@ -3,6 +3,8 @@ package com.louis.myzhihudemo;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.injector.components.ApplicationComponent;
@@ -17,6 +19,20 @@ import com.louis.myzhihudemo.utils.ToastUtils;
  */
 
 public class AndroidApplication extends Application {
+    /**
+     * 主线程ID
+     */
+    private static int mMainThreadId = -1;
+    /**
+     * 主线程Handler
+     */
+    private static Handler mMainThreadHandler;
+
+    /**
+     * 主线程Looper
+     */
+    private static Looper mMainLooper;
+
 
     private ApplicationComponent mAppComponent;
     private DaoSession mDaoSession;
@@ -31,6 +47,11 @@ public class AndroidApplication extends Application {
         initDatabase();
         initInjector();
         initConfig();
+
+        mMainLooper = getMainLooper();
+        mMainThreadHandler = new Handler(mMainLooper);
+        mMainThreadId = android.os.Process.myTid();
+
     }
 
     @Override
@@ -41,6 +62,20 @@ public class AndroidApplication extends Application {
 
     public static Context getContext() {
         return context;
+    }
+
+    /**
+     * 获取主线程ID
+     */
+    public static int getMainThreadId() {
+        return mMainThreadId;
+    }
+
+    /**
+     * 获取主线程的handler
+     */
+    public static Handler getMainThreadHandler() {
+        return mMainThreadHandler;
     }
 
     /**

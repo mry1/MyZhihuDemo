@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_download"
+        android:icon="@mipmap/ic_toolbar_download"
+        android:orderInCategory="60"
+        android:title="@string/video_download_manager"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_collect"
+        android:icon="@mipmap/ic_btn_star"
+        android:orderInCategory="70"
+        android:title="@string/collection"
+        app:showAsAction="always" />
+</menu>

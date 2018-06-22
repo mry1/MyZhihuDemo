@@ -21,7 +21,7 @@
                 android:id="@+id/fl_layout"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="right|center_horizontal"
+                android:layout_gravity="end|center_horizontal"
                 android:background="@color/colorPrimary">
                 <!--@drawable/sel_text_love-->
                 <TextView

@@ -1,9 +1,9 @@
-
-if (isModule) {
-    apply plugin: 'com.android.application'
-} else {
-    apply plugin: 'com.android.library'
-}
+apply plugin: 'com.android.application'
+//if (isModule) {
+//    apply plugin: 'com.android.application'
+//} else {
+//    apply plugin: 'com.android.library'
+//}
 apply plugin: 'org.greenrobot.greendao'
 android {
     sourceSets {

@@ -4,7 +4,7 @@ package com.louis.myzhihudemo.utils;
  * Created by louis on 17-11-28.
  */
 
-public class GlobalConst {
+public class Constant {
     /**
      * 默认保存地址key值
      */
@@ -19,5 +19,8 @@ public class GlobalConst {
     public static final String RESULT_KEY = "result_key";
 
     public static final int REQUEST_CODE = 110;
-
+    /**
+     * 保存在手机里面的SharedPreferences文件名
+     */
+    public static final String SHAREDPREFERENCES_FILENAME = "gcall_share_data";
 }

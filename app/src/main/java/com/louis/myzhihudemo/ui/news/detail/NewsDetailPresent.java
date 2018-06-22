@@ -55,7 +55,7 @@ public class NewsDetailPresent extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.showToast("网络有问题" + e.getMessage());
+                        ToastUtils.showMessage("网络有问题" + e.getMessage());
                         mView.showNetError();
                         mView.finishRefresh();
 

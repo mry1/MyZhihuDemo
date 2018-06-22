@@ -24,6 +24,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscriber;
+import rx.Subscription;
 
 /**
  * Created by louis on 17-4-17.
@@ -62,6 +64,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             mRootView = inflater.inflate(resource, null);
             ButterKnife.bind(this, mRootView);
             initInjector();
+            registerRxBus();
             initViews();
             initSwipeRefresh();
         }
@@ -73,12 +76,25 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
         return mRootView;
     }
 
+    protected void registerRxBus() {
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated");
         mIsMulti = true;
         updateViews(false);
+    }
+
+    public void addSubscription(Subscription subscription) {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.addSubscription(subscription);
+    }
+
+    public <M> void addSubscription(Class<M> clazz, Subscriber<M> subscriber) {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.addSubscription(clazz, subscriber);
     }
 
     @Override
@@ -121,7 +137,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
      */
     @Override
     public void onRetry() {
-        ToastUtils.showToast("重试！！");
+        ToastUtils.showMessage("重试！！");
         mPresenter.getData(true);
 
     }

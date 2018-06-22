@@ -6,7 +6,7 @@ import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfoDao;
-import com.louis.myzhihudemo.utils.GlobalConst;
+import com.louis.myzhihudemo.utils.Constant;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class BigPhotoPresent extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(GlobalConst.TAG_BIG_PHOTO, e.toString());
+                        Log.e(Constant.TAG_BIG_PHOTO, e.toString());
 
                     }
 

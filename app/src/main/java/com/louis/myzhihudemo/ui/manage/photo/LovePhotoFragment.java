@@ -3,7 +3,6 @@ package com.louis.myzhihudemo.ui.manage.photo;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.ui.manage.love.LovePhotoPresent;
 import com.louis.myzhihudemo.ui.photo.bigphoto.BigPhotoActivity;
 import com.louis.myzhihudemo.utils.DialogHelper;
-import com.louis.myzhihudemo.utils.GlobalConst;
+import com.louis.myzhihudemo.utils.Constant;
 import com.louis.myzhihudemo.utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
@@ -98,8 +97,8 @@ public class LovePhotoFragment extends BaseFragment<LovePhotoPresent> implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == GlobalConst.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            final boolean[] delLove = data.getBooleanArrayExtra(GlobalConst.RESULT_KEY);
+        if (requestCode == Constant.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            final boolean[] delLove = data.getBooleanArrayExtra(Constant.RESULT_KEY);
             // 延迟 500MS 做删除操作，不然退回来看不到动画效果
             for (int i = delLove.length - 1; i >= 0; i--) {
                 if (delLove[i]) {

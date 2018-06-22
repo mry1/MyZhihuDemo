@@ -16,7 +16,7 @@ public class PreferencesUtils {
      * @return
      */
     public static String getSavePath(Context context) {
-        return getString(context, GlobalConst.SAVE_PATH_KEY, GlobalConst.DEFAULT_SAVE_PATH);
+        return getString(context, Constant.SAVE_PATH_KEY, Constant.DEFAULT_SAVE_PATH);
     }
 
     public static String getString(Context context, String key, String defaultValue) {

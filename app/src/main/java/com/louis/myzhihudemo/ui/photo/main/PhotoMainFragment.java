@@ -129,7 +129,7 @@ public class PhotoMainFragment extends BaseFragment<PhotoMainPresent> implements
 
     @OnClick(R.id.fl_layout)
     public void onClick() {
-        ToastUtils.showToast("love");
+        ToastUtils.showMessage("love");
         LoveActivity.launch(mContext, LoveActivity.INDEX_LOVE_PHOTO);
 
     }

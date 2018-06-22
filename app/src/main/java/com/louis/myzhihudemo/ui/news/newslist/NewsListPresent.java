@@ -1,18 +1,14 @@
 package com.louis.myzhihudemo.ui.news.newslist;
 
-import android.util.Log;
-
 import com.louis.myzhihudemo.api.RetrofitService;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.orhanobut.logger.Logger;
 
-import io.reactivex.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -65,7 +61,7 @@ public class NewsListPresent extends BasePresenter {
                         Logger.e(e.getMessage() + isRefresh);
                         if (isRefresh){
                             mView.finishRefresh();
-                            ToastUtils.showToast("刷新失败提示什么根据实际情况");
+                            ToastUtils.showMessage("刷新失败提示什么根据实际情况");
 
                         }else{
                             mView.showNetError();

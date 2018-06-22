@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import com.louis.myzhihudemo.AndroidApplication;
 import com.louis.myzhihudemo.injector.components.ApplicationComponent;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.rxbus.RxBus;
 import com.louis.myzhihudemo.widget.EmptyLayout;
 
 import javax.inject.Inject;
@@ -20,6 +21,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by louis on 17-4-11.
@@ -118,6 +122,20 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected ApplicationComponent getAppComponent() {
         AndroidApplication application = (AndroidApplication) getApplication();
         return application.getAppComponent();
+    }
+
+    //管理 rxjava subscriber引用，防止内存泄漏 每一个activity都会有一个
+    protected CompositeSubscription mSubscriptions = new CompositeSubscription();
+
+    public void addSubscription(Subscription subscription) {
+        if (subscription == null)
+            return;
+        mSubscriptions.add(subscription);
+    }
+
+    //注册 subscriber
+    public <M> void addSubscription(Class<M> clazz, Subscriber<M> subscriber) {
+        addSubscription(RxBus.getDefault().toObservable(clazz).subscribe(subscriber));
     }
 
     /**
