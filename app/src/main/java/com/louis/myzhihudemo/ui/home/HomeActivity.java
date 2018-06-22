@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.base.BaseActivity;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.ui.manage.video.LoveVideoFragment;
 import com.louis.myzhihudemo.ui.news.main.NewsMainFragment;
 import com.louis.myzhihudemo.ui.photo.main.PhotoMainFragment;
 
@@ -34,7 +36,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private int mItemId;
     private long mExitTime = 0;
 
-
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -50,11 +51,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
                     break;
                 case R.id.nav_videos:
-
+                    replaceFragment(R.id.fl_container, new LoveVideoFragment(), mSparseTags.get(R.id.nav_videos));
 
                     break;
                 case R.id.nav_settings:
-
 
                     break;
             }

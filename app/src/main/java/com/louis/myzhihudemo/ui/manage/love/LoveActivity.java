@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
 import com.louis.myzhihudemo.base.BaseActivity;
