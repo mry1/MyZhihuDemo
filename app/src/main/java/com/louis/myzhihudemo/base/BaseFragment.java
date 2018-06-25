@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +18,8 @@ import com.louis.myzhihudemo.utils.SwipeRefreshHelper;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.louis.myzhihudemo.widget.EmptyLayout;
 import com.orhanobut.logger.Logger;
+import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import javax.inject.Inject;
 
@@ -31,7 +32,7 @@ import rx.Subscription;
  * Created by louis on 17-4-17.
  */
 
-public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements IBaseView, EmptyLayout.OnRetryListener {
+public abstract class BaseFragment<T extends BasePresenter> extends RxFragment implements IBaseView, EmptyLayout.OnRetryListener {
     @Nullable
     @BindView(R.id.empty_layout)
     EmptyLayout mEmptyLayout;
@@ -77,6 +78,10 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     }
 
     protected void registerRxBus() {
+    }
+
+    public <T> LifecycleTransformer<T> bindToLife() {
+        return this.bindToLifecycle();
     }
 
     @Override

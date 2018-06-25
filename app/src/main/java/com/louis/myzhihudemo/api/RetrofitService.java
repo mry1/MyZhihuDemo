@@ -8,6 +8,7 @@ import com.louis.myzhihudemo.api.bean.HomeStory;
 import com.louis.myzhihudemo.api.bean.StoryDetail;
 import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
+import com.louis.myzhihudemo.api.bean.VideoInfo;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.utils.NetUtils;
 import com.orhanobut.logger.Logger;
@@ -19,6 +20,7 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -50,9 +52,21 @@ public class RetrofitService {
     static final long CACHE_STALE_SEC = 60 * 60 * 24 * 1;
     //查询缓存的Cache-Control设置，为if-only-cache时只查询缓存而不会请求服务器，max-stale可以配合设置缓存失效时间
     private static final String CACHE_CONTROL_CACHE = "only-if-cached, max-stale=" + CACHE_STALE_SEC;
+    //查询网络的Cache-Control设置
+    //(假如请求了服务器并在a时刻返回响应结果，则在max-age规定的秒数内，浏览器将不会发送对应的请求到服务器，数据由缓存直接返回)
+    static final String CACHE_CONTROL_NETWORK = "Cache-Control: public, max-age=3600";
+    // 避免出现 HTTP 403 Forbidden，参考：http://stackoverflow.com/questions/13670692/403-forbidden-with-java-but-not-web-browser
+    static final String AVOID_HTTP403_FORBIDDEN = "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11";
+
+    private static final String NEWS_HOST = "http://c.3g.163.com/";
+    private static final String WELFARE_HOST = "http://gank.io/";
+    // 递增页码
+    private static final int INCREASE_PAGE = 20;
+
     private static INewsApi sNewsService;
     private static RetrofitService mInstance;
     private static IPhotoApi sBeautyService;
+    private static IVideoApi sVideoService;
 
     private RetrofitService() {
     }
@@ -140,6 +154,14 @@ public class RetrofitService {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         sBeautyService = retrofit.create(IPhotoApi.class);
+
+        retrofit = new Retrofit.Builder()
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl(NEWS_HOST)
+                .build();
+        sVideoService = retrofit.create(IVideoApi.class);
     }
 
     @NonNull
@@ -179,6 +201,23 @@ public class RetrofitService {
         return sNewsService.getStoryDetail(id);
     }
 
+    public Observable<List<VideoInfo>> getVideoList(final String videoId, int page) {
+        return sVideoService.getVideoList(videoId, page * INCREASE_PAGE / 2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(_flatMapVideo(videoId));
+    }
+
+    private Func1<Map<String, List<VideoInfo>>, Observable<List<VideoInfo>>> _flatMapVideo(final String videoId) {
+        return new Func1<Map<String, List<VideoInfo>>, Observable<List<VideoInfo>>>() {
+            @Override
+            public Observable<List<VideoInfo>> call(Map<String, List<VideoInfo>> stringListMap) {
+                return Observable.just(stringListMap.get(videoId));
+            }
+        };
+
+    }
+
     /**
      * 获取美图页面数据
      *
@@ -198,7 +237,7 @@ public class RetrofitService {
      * @return
      */
     @NonNull
-    private static Func1<BeautyPhotoList, Observable<BeautyPhotoInfo>> flatmapBeautyPhoto() {
+    private Func1<BeautyPhotoList, Observable<BeautyPhotoInfo>> flatmapBeautyPhoto() {
         return new Func1<BeautyPhotoList, Observable<BeautyPhotoInfo>>() {
             @Override
             public Observable<BeautyPhotoInfo> call(BeautyPhotoList beautyPhotoList) {

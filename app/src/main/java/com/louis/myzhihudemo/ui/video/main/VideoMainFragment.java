@@ -96,7 +96,7 @@ public class VideoMainFragment extends BaseFragment<VideoMainPresent> {
 
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < VIDEO_TITLE.length; i++) {
-            fragments.add(VideoListFragment.newInstance(VIDEO_TITLE[i]));
+            fragments.add(VideoListFragment.newInstance(VIDEO_ID[i]));
         }
         mPagerAdapter.setItems(fragments, Arrays.asList(VIDEO_TITLE));
         vp_video_content.setAdapter(mPagerAdapter);

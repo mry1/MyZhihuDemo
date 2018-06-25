@@ -7,14 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.louis.myzhihudemo.AndroidApplication;
 import com.louis.myzhihudemo.injector.components.ApplicationComponent;
-import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.rxbus.RxBus;
+import com.louis.myzhihudemo.ui.R;
 import com.louis.myzhihudemo.widget.EmptyLayout;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
 
@@ -29,7 +29,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by louis on 17-4-11.
  */
 
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements IBaseView, EmptyLayout.OnRetryListener {
+public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatActivity implements IBaseView, EmptyLayout.OnRetryListener {
     @Nullable
     @BindView(R.id.empty_layout)
     protected EmptyLayout mEmptyLayout;

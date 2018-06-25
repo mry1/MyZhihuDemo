@@ -63,6 +63,7 @@ public class BeautyListPresent extends BasePresenter {
     @Override
     public void getMoreData() {
         RetrofitService.getInstance().getBeautyPhotoList(mPage)
+                .compose(mView.<BeautyPhotoInfo>bindToLifecycle())
                 .compose(mTransformer)
                 .subscribe(new Subscriber<List<BeautyPhotoInfo>>() {
                     @Override

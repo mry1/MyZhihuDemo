@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
+import com.louis.myzhihudemo.api.bean.VideoInfo;
 import com.louis.myzhihudemo.base.BaseFragment;
 import com.louis.myzhihudemo.injector.components.DaggerVideoListComponent;
 import com.louis.myzhihudemo.injector.modules.VideoListModule;
 import com.louis.myzhihudemo.ui.R;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -42,9 +45,22 @@ public class VideoListFragment extends BaseFragment<VideoListPresent> {
     protected void initInjector() {
         DaggerVideoListComponent.builder()
                 .applicationComponent(getAppComponent())
-                .videoListModule(new VideoListModule(this))
+                .videoListModule(new VideoListModule(this, mVideoId))
                 .build()
                 .inject(this);
+    }
+
+    public void loadData(List<VideoInfo> data) {
+        System.out.println(data.toString());
+
+    }
+
+    public void loadMoreData(List<VideoInfo> data) {
+
+    }
+
+    public void loadNoData() {
+
     }
 
     @Override
@@ -54,6 +70,6 @@ public class VideoListFragment extends BaseFragment<VideoListPresent> {
 
     @Override
     protected void updateViews(boolean isRefresh) {
-
+        mPresenter.getData(isRefresh);
     }
 }

@@ -107,4 +107,8 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
     // RxBinding
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    // rxlifecycle
+//    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-components:1.0'
 }
