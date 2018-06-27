@@ -25,7 +25,7 @@ public class VideoListPresent extends BasePresenter {
 
 
     @Override
-    public void getData(boolean isRefresh) {
+    public void getData(final boolean isRefresh) {
         RetrofitService.getInstance().getVideoList(mVideoId, mPage)
                 .doOnSubscribe(new Action0() {
                     @Override
@@ -37,7 +37,11 @@ public class VideoListPresent extends BasePresenter {
                 .subscribe(new Subscriber<List<VideoInfo>>() {
                     @Override
                     public void onCompleted() {
-                        mView.hideLoading();
+                        if (isRefresh) {
+                            mView.finishRefresh();
+                        } else {
+                            mView.hideLoading();
+                        }
                     }
 
                     @Override
@@ -66,12 +70,16 @@ public class VideoListPresent extends BasePresenter {
                     @Override
                     public void onError(Throwable e) {
                         Logger.e(e.toString());
-                        mView.loadNoData();
+                        mView.loadMoreFail();
                     }
 
                     @Override
                     public void onNext(List<VideoInfo> videoList) {
-                        mView.loadMoreData(videoList);
+                        if (videoList == null) {
+                            mView.loadMoreEnd();
+                        } else {
+                            mView.loadMoreData(videoList);
+                        }
                         mPage++;
                     }
                 });

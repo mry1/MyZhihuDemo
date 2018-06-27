@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.louis.myzhihudemo.AndroidApplication;

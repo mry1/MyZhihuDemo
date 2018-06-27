@@ -37,6 +37,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            resValue("string", "PORT_NUMBER", "9999")
+        }
         greendao {
             schemaVersion 5
         }
@@ -56,6 +59,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+//    debugImplementation 'com.sw.debug.view:debug-view:1.0.2'
+//    releaseImplementation 'com.sw.debug.view:debug-view-no-op:1.0.2'
+//    testImplementation 'com.sw.debug.view:debug-view-no-op:1.0.2'
+
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:preference-v14:26.1.0'
     compile 'com.android.support:design:26.1.0'

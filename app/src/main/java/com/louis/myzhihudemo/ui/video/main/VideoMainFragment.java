@@ -93,7 +93,6 @@ public class VideoMainFragment extends BaseFragment<VideoMainPresent> {
     protected void initViews() {
         initToolbar(mToolbar, true, "视频");
         setHasOptionsMenu(true);//设置menu生效
-
         List<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < VIDEO_TITLE.length; i++) {
             fragments.add(VideoListFragment.newInstance(VIDEO_ID[i]));

@@ -12,7 +12,10 @@ import com.louis.myzhihudemo.injector.components.DaggerApplicationComponent;
 import com.louis.myzhihudemo.injector.modules.ApplicationModule;
 import com.louis.myzhihudemo.local.table.DaoMaster;
 import com.louis.myzhihudemo.local.table.DaoSession;
+import com.louis.myzhihudemo.utils.PreferencesUtils;
 import com.louis.myzhihudemo.utils.ToastUtils;
+import com.louis.myzhihudemo.utils.imageloader.GlideLoader;
+import com.louis.myzhihudemo.utils.imageloader.ImageLoader2;
 
 /**
  * Created by louis on 17-4-17.
@@ -37,12 +40,12 @@ public class AndroidApplication extends Application {
     private ApplicationComponent mAppComponent;
     private DaoSession mDaoSession;
     private static final String DB_NAME = "news-db";
-    private static Context context;
+    private static Context sContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+        sContext = getApplicationContext();
 
         initDatabase();
         initInjector();
@@ -61,7 +64,7 @@ public class AndroidApplication extends Application {
     }
 
     public static Context getContext() {
-        return context;
+        return sContext;
     }
 
     /**
@@ -100,8 +103,9 @@ public class AndroidApplication extends Application {
      */
     private void initConfig() {
         ToastUtils.init(getApplicationContext());
+        PreferencesUtils.init(sContext);
         RetrofitService.init();
-
+        ImageLoader2.getInstance().setImageLoader(new GlideLoader());
 
     }
 

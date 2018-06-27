@@ -42,7 +42,7 @@ public class DownloadUtils {
             DialogHelper.deleteDialog(activity, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    FileUtils.deleteFile(PreferencesUtils.getSavePath(activity) + File.separator + id + ".jpg");
+                    FileUtils.deleteFile(PreferencesUtils.getSavePath() + File.separator + id + ".jpg");
                     listener.onDeleted(url);
                     delDownloadPhoto(url);
                 }
@@ -72,7 +72,7 @@ public class DownloadUtils {
                             e.printStackTrace();
                         }
                         // 复制图片文件到指定路径，并改为 .jpg 后缀名
-                        return FileUtils.writeFile(file.getPath(), PreferencesUtils.getSavePath(activity) +
+                        return FileUtils.writeFile(file.getPath(), PreferencesUtils.getSavePath() +
                                 File.separator + "picture" + File.separator + id + ".jpg", false);
                     }
                 })

@@ -23,4 +23,6 @@ public class Constant {
      * 保存在手机里面的SharedPreferences文件名
      */
     public static final String SHAREDPREFERENCES_FILENAME = "gcall_share_data";
+    public static final String NO_IMAGE_KEY = "setting_no_image";
+
 }
