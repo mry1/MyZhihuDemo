@@ -55,53 +55,53 @@ public class PicassoLoader implements ILoaderStrategy {
 	@Override
 	public void loadImage(LoaderOptions options) {
 		RequestCreator requestCreator = null;
-		if (options.url != null) {
-			requestCreator = getPicasso().load(options.url);
-		} else if (options.file != null) {
-			requestCreator = getPicasso().load(options.file);
-		}else if (options.drawableResId != 0) {
-			requestCreator = getPicasso().load(options.drawableResId);
-		} else if (options.uri != null){
-			requestCreator = getPicasso().load(options.uri);
+		if (options.getUrl() != null) {
+			requestCreator = getPicasso().load(options.getUrl());
+		} else if (options.getFile() != null) {
+			requestCreator = getPicasso().load(options.getFile());
+		}else if (options.getDrawableResId() != 0) {
+			requestCreator = getPicasso().load(options.getDrawableResId());
+		} else if (options.getUri() != null){
+			requestCreator = getPicasso().load(options.getUri());
 		}
 
 		if (requestCreator == null) {
 			throw new NullPointerException("requestCreator must not be null");
 		}
-		if (options.targetHeight > 0 && options.targetWidth > 0) {
-			requestCreator.resize(options.targetWidth, options.targetHeight);
+		if (options.getTargetHeight() > 0 && options.getTargetWidth() > 0) {
+			requestCreator.resize(options.getTargetWidth(), options.getTargetHeight());
 		}
-		if (options.isCenterInside) {
+		if (options.isCenterInside()) {
 			requestCreator.centerInside();
-		} else if (options.isCenterCrop) {
+		} else if (options.isCenterCrop()) {
 			requestCreator.centerCrop();
 		}
-		if (options.config != null) {
-			requestCreator.config(options.config);
+		if (options.getConfig() != null) {
+			requestCreator.config(options.getConfig());
 		}
-		if (options.errorResId != 0) {
-			requestCreator.error(options.errorResId);
+		if (options.getErrorResId() != 0) {
+			requestCreator.error(options.getErrorResId());
 		}
-		if (options.placeholderResId != 0) {
-			requestCreator.placeholder(options.placeholderResId);
+		if (options.getPlaceholderResId() != 0) {
+			requestCreator.placeholder(options.getPlaceholderResId());
 		}
-		if (options.bitmapAngle != 0) {
-			requestCreator.transform(new PicassoTransformation(options.bitmapAngle));
+		if (options.getBitmapAngle() != 0) {
+			requestCreator.transform(new PicassoTransformation(options.getBitmapAngle()));
 		}
-		if (options.skipLocalCache) {
+		if (options.isSkipLocalCache()) {
 			requestCreator.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE);
 		}
-		if (options.skipNetCache) {
+		if (options.isSkipNetCache()) {
 			requestCreator.networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE);
 		}
-		if (options.degrees != 0) {
-			requestCreator.rotate(options.degrees);
+		if (options.getDegrees() != 0) {
+			requestCreator.rotate(options.getDegrees());
 		}
 
-		if (options.targetView instanceof ImageView) {
-			requestCreator.into(((ImageView)options.targetView));
-		} else if (options.callBack != null){
-			requestCreator.into(new PicassoTarget(options.callBack));
+		if (options.getTargetView() instanceof ImageView) {
+			requestCreator.into(((ImageView)options.getTargetView()));
+		} else if (options.getCallBack() != null){
+			requestCreator.into(new PicassoTarget(options.getCallBack()));
 		}
 	}
 

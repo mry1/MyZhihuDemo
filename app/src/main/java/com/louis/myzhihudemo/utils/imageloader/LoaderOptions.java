@@ -21,32 +21,32 @@ import java.lang.annotation.RetentionPolicy;
  * 该类为图片加载框架的通用属性封装，不能耦合任何一方的框架
  */
 public class LoaderOptions {
-    public Context context;
-    public Activity activity;
-    public Fragment fragment;
-    public int placeholderResId;
-    public int errorResId;
-    public boolean isCenterCrop;
-    public boolean isFitCenter;
-    public boolean isCenterInside;
+    private Context context;
+    private Activity activity;
+    private Fragment fragment;
+    private int placeholderResId;
+    private int errorResId;
+    private boolean isCenterCrop;
+    private boolean isFitCenter;
+    private boolean isCenterInside;
     @DiskCacheStrategy
-    public int diskCacheStrategy;
-    public boolean skipLocalCache; //设置跳过内存缓存
-    public boolean skipNetCache;
-    public boolean dontAnimate;
-    public RequestListener listener;
-    public Bitmap.Config config = Bitmap.Config.RGB_565;
-    public int targetWidth;
-    public int targetHeight;
-    public float bitmapAngle; //圆角角度
-    public float degrees; //旋转角度.注意:picasso针对三星等本地图片，默认旋转回0度，即正常位置。此时不需要自己rotate
-    public Drawable placeholder;
-    public View targetView;//targetView展示图片
-    public BitmapCallBack callBack;
-    public String url;
-    public File file;
-    public int drawableResId;
-    public Uri uri;
+    private int diskCacheStrategy;
+    private boolean skipLocalCache; //设置跳过内存缓存
+    private boolean skipNetCache;
+    private boolean dontAnimate;
+    private RequestListener listener;
+    private Bitmap.Config config = Bitmap.Config.RGB_565;
+    private int targetWidth;
+    private int targetHeight;
+    private float bitmapAngle; //圆角角度
+    private float degrees; //旋转角度.注意:picasso针对三星等本地图片，默认旋转回0度，即正常位置。此时不需要自己rotate
+    private Drawable placeholder;
+    private View targetView;//targetView展示图片
+    private BitmapCallBack callBack;
+    private String url;
+    private File file;
+    private int drawableResId;
+    private Uri uri;
 
     @IntDef({DiskCacheStrategy.NONE, DiskCacheStrategy.ALL, DiskCacheStrategy.SOURCE, DiskCacheStrategy.RESULT})
     @Retention(RetentionPolicy.RUNTIME)
@@ -63,6 +63,102 @@ public class LoaderOptions {
 
     public LoaderOptions(Context context) {
         this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public Fragment getFragment() {
+        return fragment;
+    }
+
+    public int getPlaceholderResId() {
+        return placeholderResId;
+    }
+
+    public int getErrorResId() {
+        return errorResId;
+    }
+
+    public boolean isCenterCrop() {
+        return isCenterCrop;
+    }
+
+    public boolean isCenterInside() {
+        return isCenterInside;
+    }
+
+    public int getDiskCacheStrategy() {
+        return diskCacheStrategy;
+    }
+
+    public boolean isSkipLocalCache() {
+        return skipLocalCache;
+    }
+
+    public boolean isSkipNetCache() {
+        return skipNetCache;
+    }
+
+    public boolean isDontAnimate() {
+        return dontAnimate;
+    }
+
+    public RequestListener getListener() {
+        return listener;
+    }
+
+    public Bitmap.Config getConfig() {
+        return config;
+    }
+
+    public int getTargetWidth() {
+        return targetWidth;
+    }
+
+    public int getTargetHeight() {
+        return targetHeight;
+    }
+
+    public float getBitmapAngle() {
+        return bitmapAngle;
+    }
+
+    public float getDegrees() {
+        return degrees;
+    }
+
+    public Drawable getPlaceholder() {
+        return placeholder;
+    }
+
+    public View getTargetView() {
+        return targetView;
+    }
+
+    public BitmapCallBack getCallBack() {
+        return callBack;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public int getDrawableResId() {
+        return drawableResId;
+    }
+
+    public Uri getUri() {
+        return uri;
     }
 
     public LoaderOptions(Activity activity) {
@@ -154,9 +250,13 @@ public class LoaderOptions {
         return this;
     }
 
-    public LoaderOptions isFitCenter() {
-        isFitCenter = isFitCenter;
+    public LoaderOptions fitCenter() {
+        isFitCenter = true;
         return this;
+    }
+
+    public boolean isFitCenter() {
+        return isFitCenter;
     }
 
     public LoaderOptions centerInside() {

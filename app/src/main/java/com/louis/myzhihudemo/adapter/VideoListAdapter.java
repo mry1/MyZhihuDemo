@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.louis.myzhihudemo.api.bean.VideoInfo;
 import com.louis.myzhihudemo.ui.R;
+import com.louis.myzhihudemo.utils.DefIconFactory;
 import com.louis.myzhihudemo.utils.ImageLoader;
 import com.louis.myzhihudemo.utils.imageloader.ImageLoader2;
 import com.louis.myzhihudemo.utils.imageloader.LoaderOptions;
@@ -33,6 +34,7 @@ public class VideoListAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolder
                 .with(mContext)
                 .load(item.getCover())
                 .angle(3)
+//                .placeholder(DefIconFactory.provideIcon())
                 .resize(400, 600)
                 .centerCrop()
                 .diskCacheStrategy(LoaderOptions.DiskCacheStrategy.ALL)

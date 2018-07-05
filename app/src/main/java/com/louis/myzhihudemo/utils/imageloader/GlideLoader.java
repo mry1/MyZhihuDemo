@@ -24,67 +24,75 @@ public class GlideLoader implements ILoaderStrategy {
     private RequestManager with;
     private DrawableTypeRequest load;
     private LoaderOptions options;
+    private boolean mShowImageAlways;
+
+    public GlideLoader() {
+        mShowImageAlways = PreferencesUtils.isShowImageAlways();
+    }
+
+    public GlideLoader(boolean isShowImageAlaways) {
+        this.mShowImageAlways = isShowImageAlaways;
+    }
 
     @Override
     public void loadImage(LoaderOptions options) {
         this.options = options;
-        if (options.context != null) {
-            with = Glide.with(options.context);
-        } else if (options.activity != null) {
-            with = Glide.with(options.activity);
-        } else if (options.fragment != null) {
-            with = Glide.with(options.fragment);
+        if (options.getContext() != null) {
+            with = Glide.with(options.getContext());
+        } else if (options.getActivity() != null) {
+            with = Glide.with(options.getActivity());
+        } else if (options.getFragment() != null) {
+            with = Glide.with(options.getFragment());
         } else {
             with = Glide.with(AndroidApplication.getContext());
         }
 //------------------------加载url开始--------------------------
-        if (PreferencesUtils.isShowImageAlways()) {
-            if (options.url != null) {
-                load = with.load(options.url);
-            } else if (options.uri != null) {
-                load = with.load(options.uri);
-            } else if (options.drawableResId != 0) {
-                load = with.load(options.drawableResId);
-            } else if (options.file != null) {
-                load = with.load(options.file);
+        if (mShowImageAlways) {
+            if (options.getUrl() != null) {
+                load = with.load(options.getUrl());
+            } else if (options.getUri() != null) {
+                load = with.load(options.getUri());
+            } else if (options.getDrawableResId() != 0) {
+                load = with.load(options.getDrawableResId());
+            } else if (options.getFile() != null) {
+                load = with.load(options.getFile());
             }
-            if (options.targetHeight > 0 && options.targetWidth > 0) {
-                load.override(options.targetWidth, options.targetHeight);
+            if (options.getTargetHeight() > 0 && options.getTargetWidth() > 0) {
+                load.override(options.getTargetWidth(), options.getTargetHeight());
             }
         } else {
             load = with.load(DefIconFactory.provideIcon());
         }
 //------------------------加载url结束--------------------------
-
-        if (options.isFitCenter) {
+        if (options.isFitCenter()) {
             load.fitCenter();
-        } else if (options.isCenterCrop) {
+        } else if (options.isCenterCrop()) {
             load.centerCrop();
         }
 
 //        if (options.config != null) {
 //            load.config(options.config);
 //        }
-        if (options.errorResId != 0) {
-            load.error(options.errorResId);
+        if (options.getErrorResId() != 0) {
+            load.error(options.getErrorResId());
         }
-        if (options.placeholderResId != 0) {
-            load.placeholder(options.placeholderResId);
+        if (options.getPlaceholderResId() != 0) {
+            load.placeholder(options.getPlaceholderResId());
         }
-        if (options.bitmapAngle != 0) {
+        if (options.getBitmapAngle() != 0) {
             GlideRoundTransform glideRoundTransform = null;
-            if (options.context != null) {
-                glideRoundTransform = new GlideRoundTransform(options.context, options.bitmapAngle);
+            if (options.getContext() != null) {
+                glideRoundTransform = new GlideRoundTransform(options.getContext(), options.getBitmapAngle());
             }
-            if (options.activity != null) {
-                glideRoundTransform = new GlideRoundTransform(options.activity, options.bitmapAngle);
+            if (options.getActivity() != null) {
+                glideRoundTransform = new GlideRoundTransform(options.getActivity(), options.getBitmapAngle());
             }
-            if (options.fragment != null) {
-                glideRoundTransform = new GlideRoundTransform(options.fragment.getContext(), options.bitmapAngle);
+            if (options.getFragment() != null) {
+                glideRoundTransform = new GlideRoundTransform(options.getFragment().getContext(), options.getBitmapAngle());
             }
             load.transform(glideRoundTransform);
         }
-        switch (options.diskCacheStrategy) {
+        switch (options.getDiskCacheStrategy()) {
             case LoaderOptions.DiskCacheStrategy.ALL:
                 load.diskCacheStrategy(DiskCacheStrategy.ALL);
                 break;
@@ -98,14 +106,14 @@ public class GlideLoader implements ILoaderStrategy {
                 load.diskCacheStrategy(DiskCacheStrategy.SOURCE);
                 break;
         }
-        if (options.listener != null) {
-            load.listener(options.listener);
+        if (options.getListener() != null) {
+            load.listener(options.getListener());
         }
-        if (options.dontAnimate) {
+        if (options.isDontAnimate()) {
             load.dontAnimate();
         }
         //        load.skipMemoryCache(options.skipLocalCache);
-        load.into(((ImageView) options.targetView));
+        load.into(((ImageView) options.getTargetView()));
 
 //                .load(url).centerCrop().dontAnimate().listener(listener).into(view);
 
@@ -113,12 +121,12 @@ public class GlideLoader implements ILoaderStrategy {
 
     @Override
     public void clearMemoryCache() {
-        if (options.context != null) {
-            Glide.get(options.context).clearMemory();//清理内存缓存 可以在UI主线程中进行
-        } else if (options.activity != null) {
-            Glide.get(options.activity).clearMemory();//清理内存缓存 可以在UI主线程中进行
-        } else if (options.fragment != null) {
-            Glide.get(options.fragment.getContext()).clearMemory();//清理内存缓存 可以在UI主线程中进行
+        if (options.getContext() != null) {
+            Glide.get(options.getContext()).clearMemory();//清理内存缓存 可以在UI主线程中进行
+        } else if (options.getActivity() != null) {
+            Glide.get(options.getActivity()).clearMemory();//清理内存缓存 可以在UI主线程中进行
+        } else if (options.getFragment() != null) {
+            Glide.get(options.getFragment().getContext()).clearMemory();//清理内存缓存 可以在UI主线程中进行
         }
     }
 
@@ -128,12 +136,12 @@ public class GlideLoader implements ILoaderStrategy {
             @Override
             public void run() {
                 super.run();
-                if (options.context != null) {
-                    Glide.get(options.context).clearDiskCache();//清理磁盘缓存 需要在子线程中执行
-                } else if (options.activity != null) {
-                    Glide.get(options.activity).clearDiskCache();//清理磁盘缓存 需要在子线程中执行
-                } else if (options.fragment != null) {
-                    Glide.get(options.fragment.getContext()).clearDiskCache();//清理磁盘缓存 需要在子线程中执行
+                if (options.getContext() != null) {
+                    Glide.get(options.getContext()).clearDiskCache();//清理磁盘缓存 需要在子线程中执行
+                } else if (options.getActivity() != null) {
+                    Glide.get(options.getActivity()).clearDiskCache();//清理磁盘缓存 需要在子线程中执行
+                } else if (options.getFragment() != null) {
+                    Glide.get(options.getFragment().getContext()).clearDiskCache();//清理磁盘缓存 需要在子线程中执行
                 }
             }
         }.start();
