@@ -58,6 +58,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 case R.id.nav_settings:
 
                     break;
+                default:
             }
             mItemId = -1;
 

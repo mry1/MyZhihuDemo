@@ -1,6 +1,7 @@
 package com.louis.myzhihudemo.api;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.louis.myzhihudemo.AndroidApplication;
 import com.louis.myzhihudemo.adapter.item.BeautyPhotoList;
@@ -81,6 +82,41 @@ public class RetrofitService {
     /**
      * 云端响应头拦截器，用来配置缓存策略
      */
+    private static Interceptor cacheInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            //拿到请求体
+            Request request = chain.request();
+
+            //读接口上的@Headers里的注解配置
+            String cacheControl = request.cacheControl().toString();
+
+            //判断没有网络并且添加了@Headers注解,才使用网络缓存.
+            if (!NetUtils.isNetworkAvailable(AndroidApplication.getContext()) && !TextUtils.isEmpty(cacheControl)) {
+                //重置请求体;
+                request = request.newBuilder()
+                        //强制使用缓存
+                        .cacheControl(CacheControl.FORCE_CACHE)
+                        .build();
+            }
+
+            //如果没有添加注解,则不缓存
+            if (TextUtils.isEmpty(cacheControl) || "no-store".contains(cacheControl)) {
+                //响应头设置成无缓存
+                cacheControl = "no-store";
+            } else if (NetUtils.isNetworkAvailable(AndroidApplication.getContext())) {
+                //如果有网络,则将缓存的过期时间,设置为0,获取最新数据
+                cacheControl = /*"public, max-age=" + 0*/ "no-cache";
+            } else {
+                //...如果无网络,则根据@headers注解的设置进行缓存.
+            }
+            Response response = chain.proceed(request);
+            return response.newBuilder()
+                    .header("Cache-Control", cacheControl)
+                    .removeHeader("Pragma")
+                    .build();
+        }
+    };
     private static final Interceptor sRewriteCacheControlInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -106,7 +142,6 @@ public class RetrofitService {
             }
         }
     };
-
     /**
      * 打印返回的json数据拦截器
      */
@@ -131,12 +166,13 @@ public class RetrofitService {
 
     public static void init() {
         // 指定缓存路径，缓存大小100M
-        Cache cache = new Cache(new File(AndroidApplication.getContext().getCacheDir(), "HttpCache"), 1024 * 1024 * 100);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache)
+        Cache cache = new Cache(AndroidApplication.getContext().getCacheDir(), 1024 * 1024 * 100);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .addInterceptor(sLoggingInterceptor)
-//                .addInterceptor(sRewriteCacheControlInterceptor)
-//                .addNetworkInterceptor(sRewriteCacheControlInterceptor)
+                .addInterceptor(sRewriteCacheControlInterceptor)
+                .addNetworkInterceptor(sRewriteCacheControlInterceptor)
+                .cache(cache)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()

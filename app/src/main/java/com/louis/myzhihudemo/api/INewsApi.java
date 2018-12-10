@@ -6,6 +6,7 @@ import com.louis.myzhihudemo.api.bean.StoryList;
 import com.louis.myzhihudemo.api.bean.ThemeInfo;
 
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -37,6 +38,7 @@ public interface INewsApi {
      *
      * @return
      */
+    @Headers("Cache-Control: public, max-age=" + 24 * 3600)
     @GET("api/4/news/latest")
     Observable<HomeStory> getHomeStory();
 
@@ -51,6 +53,7 @@ public interface INewsApi {
 
     /**
      * 获取故事详情
+     *
      * @param id
      * @return
      */

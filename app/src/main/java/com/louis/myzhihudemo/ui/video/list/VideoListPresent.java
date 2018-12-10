@@ -1,9 +1,9 @@
 package com.louis.myzhihudemo.ui.video.list;
 
 import com.louis.myzhihudemo.api.RetrofitService;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.api.bean.VideoInfo;
 import com.louis.myzhihudemo.base.BasePresenter;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;

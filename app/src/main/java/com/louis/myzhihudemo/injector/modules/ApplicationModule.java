@@ -3,7 +3,7 @@ package com.louis.myzhihudemo.injector.modules;
 import android.content.Context;
 
 import com.louis.myzhihudemo.AndroidApplication;
-import com.louis.myzhihudemo.local.table.DaoSession;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 
 import javax.inject.Singleton;
 

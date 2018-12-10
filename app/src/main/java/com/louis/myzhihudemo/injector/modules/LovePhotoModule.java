@@ -3,8 +3,8 @@ package com.louis.myzhihudemo.injector.modules;
 import android.content.Context;
 
 import com.louis.myzhihudemo.adapter.BeautyListAdapter;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.injector.PerFragment;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.manage.love.LovePhotoPresent;
 import com.louis.myzhihudemo.ui.manage.photo.LovePhotoFragment;
 

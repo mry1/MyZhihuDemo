@@ -7,11 +7,11 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.louis.myzhihudemo.api.RetrofitService;
+import com.louis.myzhihudemo.api.bean.DaoMaster;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.injector.components.ApplicationComponent;
 import com.louis.myzhihudemo.injector.components.DaggerApplicationComponent;
 import com.louis.myzhihudemo.injector.modules.ApplicationModule;
-import com.louis.myzhihudemo.local.table.DaoMaster;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.utils.PreferencesUtils;
 import com.louis.myzhihudemo.utils.ToastUtils;
 import com.louis.myzhihudemo.utils.imageloader.GlideLoader;

@@ -65,6 +65,7 @@ public class VideoListFragment extends BaseFragment<VideoListPresent> {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                VideoInfo item = (VideoInfo) adapter.getItem(position);
 
             }
         });

@@ -97,6 +97,7 @@ public class EmptyLayout extends FrameLayout {
             case STATUS_HIDE:
                 setVisibility(GONE);
                 break;
+            default:
         }
 
     }

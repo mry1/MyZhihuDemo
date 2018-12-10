@@ -1,8 +1,8 @@
 package com.louis.myzhihudemo.injector.modules;
 
 import com.louis.myzhihudemo.adapter.VideoListAdapter;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.injector.PerFragment;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.video.list.VideoListFragment;
 import com.louis.myzhihudemo.ui.video.list.VideoListPresent;
 

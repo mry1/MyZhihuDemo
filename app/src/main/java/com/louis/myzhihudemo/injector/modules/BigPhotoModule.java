@@ -1,9 +1,9 @@
 package com.louis.myzhihudemo.injector.modules;
 
 import com.louis.myzhihudemo.adapter.PhotoPagerAdapter;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.injector.PerFragment;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.photo.bigphoto.BigPhotoActivity;
 import com.louis.myzhihudemo.ui.photo.bigphoto.BigPhotoPresent;
 

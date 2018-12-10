@@ -1,8 +1,8 @@
 package com.louis.myzhihudemo.injector.modules;
 
 import com.louis.myzhihudemo.adapter.ViewPagerAdapter;
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.injector.PerFragment;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.video.main.VideoMainFragment;
 import com.louis.myzhihudemo.ui.video.main.VideoMainPresent;
 

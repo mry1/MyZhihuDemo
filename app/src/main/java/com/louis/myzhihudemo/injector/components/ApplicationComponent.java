@@ -2,8 +2,8 @@ package com.louis.myzhihudemo.injector.components;
 
 import android.content.Context;
 
+import com.louis.myzhihudemo.api.bean.DaoSession;
 import com.louis.myzhihudemo.injector.modules.ApplicationModule;
-import com.louis.myzhihudemo.local.table.DaoSession;
 
 import javax.inject.Singleton;
 

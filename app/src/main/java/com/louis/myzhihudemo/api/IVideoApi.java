@@ -14,7 +14,7 @@ import static com.louis.myzhihudemo.api.RetrofitService.AVOID_HTTP403_FORBIDDEN;
 
 public interface IVideoApi {
 
-    @Headers(AVOID_HTTP403_FORBIDDEN)
+    @Headers("Cache-Control: public, max-age=" + 24 * 3600 + "\r\n" + AVOID_HTTP403_FORBIDDEN)
     @GET("nc/video/list/{id}/n/{startPage}-10.html")
     Observable<Map<String, List<VideoInfo>>> getVideoList(@Path("id") String id, @Path("startPage") int startPage);
 

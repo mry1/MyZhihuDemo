@@ -47,7 +47,8 @@ public class BeautyListPresent extends BasePresenter {
                     @Override
                     public void onError(Throwable e) {
                         System.out.println(e.toString());
-                        mView.showNetError();
+                        mView.hideLoading();
+                        //                        mView.showNetError();
 
                     }
 

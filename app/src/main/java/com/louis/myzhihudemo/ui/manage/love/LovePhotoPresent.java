@@ -3,7 +3,6 @@ package com.louis.myzhihudemo.ui.manage.love;
 import com.louis.myzhihudemo.base.BasePresenter;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfo;
 import com.louis.myzhihudemo.local.table.BeautyPhotoInfoDao;
-import com.louis.myzhihudemo.local.table.DaoSession;
 import com.louis.myzhihudemo.ui.manage.photo.LovePhotoFragment;
 
 import java.util.List;
